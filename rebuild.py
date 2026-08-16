@@ -1,43 +1,42 @@
 #!/usr/bin/env python3
-"""Rebuild uno-guardians-of-the-deep.html from template + assets."""
+"""Rebuild production HTML from template + assets.
+
+Web builds reference /assets/*.webp so browsers can cache and load in
+parallel. The offline deliverable still inlines images as data URIs.
+"""
 import os, base64
 
 def rebuild():
-    # Read template
     with open('src/template.html', 'r') as f:
-        html = f.read()
-    
-    # Scan assets directory for all WebP files
-    assets_dir = 'assets'
-    assets = {}
-    for fname in os.listdir(assets_dir):
-        if fname.endswith('.webp'):
-            key = fname.replace('.webp', '')
-            assets[key] = os.path.join(assets_dir, fname)
-    
-    # Inline all assets as base64 data URIs
-    inlined = 0
-    for key, path in sorted(assets.items()):
-        placeholder = f'{{{{A:{key}}}}}'
-        if placeholder in html:
-            with open(path, 'rb') as f:
-                data = base64.b64encode(f.read()).decode('ascii')
-            uri = f'data:image/webp;base64,{data}'
-            html = html.replace(placeholder, uri)
-            kb = len(data) // 1024
-            print(f"  ✓ {key}: {kb}KB")
-            inlined += 1
-        else:
-            print(f"  - {key}: no placeholder in template")
-    
-    # Write production file and index.html (Vercel / GitHub Pages serve "/" from index.html)
-    os.makedirs('.', exist_ok=True)
-    for out_name in ('uno-guardians-of-the-deep.html', 'index.html'):
-        with open(out_name, 'w') as f:
-            f.write(html)
+        template = f.read()
 
-    size_kb = os.path.getsize('index.html') // 1024
-    print(f"\n✅ Rebuilt {inlined} assets → index.html and uno-guardians-of-the-deep.html ({size_kb}KB)")
+    assets_dir = 'assets'
+    keys = []
+    for fname in sorted(os.listdir(assets_dir)):
+        if fname.endswith('.webp'):
+            keys.append(fname.replace('.webp', ''))
+
+    web = template
+    offline = template
+    for key in keys:
+        placeholder = f'{{{{A:{key}}}}}'
+        if placeholder not in template:
+            print(f"  - {key}: no placeholder in template")
+            continue
+        path = os.path.join(assets_dir, key + '.webp')
+        web = web.replace(placeholder, f'/assets/{key}.webp')
+        with open(path, 'rb') as f:
+            data = base64.b64encode(f.read()).decode('ascii')
+        offline = offline.replace(placeholder, f'data:image/webp;base64,{data}')
+        print(f"  ✓ {key}: {os.path.getsize(path)//1024}KB")
+
+    os.makedirs('.', exist_ok=True)
+    with open('index.html', 'w') as f:
+        f.write(web)
+    with open('uno-guardians-of-the-deep.html', 'w') as f:
+        f.write(offline)
+
+    print(f"\n✅ Web index.html {os.path.getsize('index.html')//1024}KB · offline HTML {os.path.getsize('uno-guardians-of-the-deep.html')//1024}KB")
 
 if __name__ == '__main__':
     rebuild()

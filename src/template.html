@@ -5,7 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UNO — Guardians of the Deep | A Fantasea Adventure</title>
 <meta name="description" content="A Fantasea animated adventure: a dolphin given a second chance, a secret lab beneath the waves, and a fight to heal the ocean. Watch the official trailer.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Fantasea">
+<meta name="theme-color" content="#03101f">
 <link rel="canonical" href="https://www.uno-x.world/">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="UNO: Guardians of the Deep">
 <meta property="og:url" content="https://www.uno-x.world/">
@@ -21,10 +26,46 @@
 <meta name="twitter:title" content="UNO: Guardians of the Deep">
 <meta name="twitter:description" content="A Fantasea animated adventure: a dolphin given a second chance, a secret lab beneath the waves, and a fight to heal the ocean. Watch the official trailer.">
 <meta name="twitter:image" content="https://www.uno-x.world/og.jpg">
+<link rel="preload" as="image" href="/assets/logo.webp" type="image/webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://www.youtube.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap"></noscript>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "UNO: Guardians of the Deep",
+      "url": "https://www.uno-x.world/",
+      "description": "Official site for the animated film UNO: Guardians of the Deep, a Fantasea adventure.",
+      "publisher": { "@type": "Organization", "name": "Fantasea", "url": "https://www.uno-x.world/" }
+    },
+    {
+      "@type": "Movie",
+      "name": "UNO: Guardians of the Deep",
+      "url": "https://www.uno-x.world/",
+      "image": "https://www.uno-x.world/og.jpg",
+      "description": "A curious dolphin is given a second chance by a kind scientist and a brave young woman. Together they inspire a movement that frees captive animals, heals the oceans, and teaches technology how to care.",
+      "genre": ["Animation", "Adventure", "Family"],
+      "inLanguage": "en",
+      "productionCompany": { "@type": "Organization", "name": "Fantasea" },
+      "trailer": {
+        "@type": "VideoObject",
+        "name": "UNO: Guardians of the Deep — Official Trailer",
+        "description": "Watch the official trailer for UNO: Guardians of the Deep.",
+        "thumbnailUrl": "https://www.uno-x.world/og.jpg",
+        "embedUrl": "https://www.youtube.com/embed/7RcKBipTxSE",
+        "contentUrl": "https://www.youtube.com/watch?v=7RcKBipTxSE",
+        "uploadDate": "2026-01-01"
+      }
+    }
+  ]
+}
+</script>
 <style>
   :root{
     --aqua:#35d0ff; --aqua-soft:#7fd8e8; --gold:#e7bd5c; --gold-hi:#f9edb0;
@@ -214,7 +255,7 @@
     <a href="#story">Story</a>
     <a href="#cast">The Crew</a>
     <a href="#world">Fantasea</a>
-    <a class="yt" href="https://youtu.be/7RcKBipTxSE" target="_blank" rel="noopener">▶ YouTube</a>
+    <a class="yt" href="https://youtu.be/7RcKBipTxSE" target="_blank" rel="noopener noreferrer">▶ YouTube</a>
   </div>
 </nav>
 
@@ -228,7 +269,7 @@
 <main>
   <!-- ============ HERO ============ -->
   <section id="hero">
-    <div class="swim bob" id="hero-uno"><img src="{{A:uno-hero}}" alt="Uno, the cyborg dolphin" width="900" height="869"></div>
+    <div class="swim bob" id="hero-uno"><img src="{{A:uno-hero}}" alt="Uno, the cyborg dolphin" width="900" height="869" decoding="async"></div>
     <div class="wrap">
       <h1 class="logo reveal">
         <img src="{{A:logo}}" width="1350" height="719"
@@ -251,7 +292,7 @@
 
   <!-- ============ STORY ============ -->
   <section id="story">
-    <div class="swim" id="story-uno"><div class="bob2"><img src="{{A:uno-side}}" alt="" width="1000" height="505"></div></div>
+    <div class="swim" id="story-uno"><div class="bob2"><img src="{{A:uno-side}}" alt="Uno swimming" width="1000" height="505" loading="lazy" decoding="async"></div></div>
     <div class="wrap">
       <div class="kicker reveal">From the surface to the deep</div>
       <h2 class="reveal">The Story So Far</h2>
@@ -287,22 +328,22 @@
       <h2 class="reveal">Meet the Crew</h2>
       <div class="cards">
         <article class="card reveal">
-          <div class="ph"><img src="{{A:sarah}}" alt="Sarah" loading="lazy"></div>
+          <div class="ph"><img src="{{A:sarah}}" alt="Sarah, the brave heart" width="719" height="820" loading="lazy" decoding="async"></div>
           <div class="tx"><div class="role">The Brave Heart</div><h3>Sarah</h3>
           <p>A bio-engineering student who grew up pressing her hand against the aquarium glass. She never stopped listening.</p></div>
         </article>
         <article class="card reveal">
-          <div class="ph"><img src="{{A:elias}}" alt="Elias" loading="lazy"></div>
+          <div class="ph"><img src="{{A:elias}}" alt="Elias, the kind scientist" width="577" height="820" loading="lazy" decoding="async"></div>
           <div class="tx"><div class="role">The Kind Scientist</div><h3>Elias</h3>
           <p>A genius who traded the surface for a secret lab beneath the waves — building machines that protect instead of take.</p></div>
         </article>
         <article class="card reveal">
-          <div class="ph"><img src="{{A:marty}}" alt="Marty" loading="lazy"></div>
+          <div class="ph"><img src="{{A:marty}}" alt="Marty, the showman" width="613" height="820" loading="lazy" decoding="async"></div>
           <div class="tx"><div class="role">The Showman</div><h3>Marty</h3>
           <p>King of the Aquapark empire. Every smile is box office — and every promise comes with fine print.</p></div>
         </article>
         <article class="card reveal">
-          <div class="ph"><img src="{{A:ivanka}}" alt="Ivanka" style="object-position:center 20%" loading="lazy"></div>
+          <div class="ph"><img src="{{A:ivanka}}" alt="Ivanka, Aquapark royalty" width="1000" height="558" style="object-position:center 20%" loading="lazy" decoding="async"></div>
           <div class="tx"><div class="role">The Trophy Wife</div><h3>Ivanka</h3>
           <p>Aquapark royalty. The diamonds are real. The smile is negotiable.</p></div>
         </article>
@@ -314,32 +355,32 @@
       </div>
       <div class="reef">
         <div class="critter reveal">
-          <div class="fl"><img src="{{A:turtle}}" alt="The Ancient Turtle" class="bob" loading="lazy"></div>
+          <div class="fl"><img src="{{A:turtle}}" alt="The Ancient Turtle" class="bob" width="635" height="520" loading="lazy" decoding="async"></div>
           <div class="role">Elder of the Deep</div><h3>The Ancient One</h3>
           <p class="quote">If you want to go fast, you go alone. If you want to go far, you go together.</p>
         </div>
         <div class="critter reveal">
-          <div class="fl"><img src="{{A:puffy}}" alt="Puffy the pufferfish" class="bob2" loading="lazy"></div>
+          <div class="fl"><img src="{{A:puffy}}" alt="Puffy the pufferfish" class="bob2" width="578" height="504" loading="lazy" decoding="async"></div>
           <div class="role">Do not swallow</div><h3>Puffy</h3>
           <p>The reef's most volatile resident. Side effects may include extremely strange dreams.</p>
         </div>
         <div class="critter reveal">
-          <div class="fl"><img src="{{A:mantas}}" alt="Mantas the mantis shrimp" class="bob" loading="lazy"></div>
+          <div class="fl"><img src="{{A:mantas}}" alt="Mantas the mantis shrimp" class="bob" width="800" height="742" loading="lazy" decoding="async"></div>
           <div class="role">Claws first, questions last</div><h3>Mantas</h3>
           <p>The grumpiest crustacean in the Sea. Packs a punch with the power of the sun.</p>
         </div>
         <div class="critter reveal">
-          <div class="fl"><img src="{{A:krabby}}" alt="Krabby the crab" class="bob2" loading="lazy"></div>
+          <div class="fl"><img src="{{A:krabby}}" alt="Krabby the crab" class="bob2" width="774" height="520" loading="lazy" decoding="async"></div>
           <div class="role">Heart of the reef</div><h3>Krabby</h3>
           <p class="quote">You got to put that love in action, if you want that satisfaction..</p>
         </div>
         <div class="critter reveal">
-          <div class="fl"><img src="{{A:octopus}}" alt="Octopus" class="bob" loading="lazy"></div>
+          <div class="fl"><img src="{{A:octopus}}" alt="Octopus" class="bob" width="800" height="725" loading="lazy" decoding="async"></div>
           <div class="role">Professional worrier</div><h3>Octopus</h3>
           <p>Eight arms, zero chill. If the current shifts, he panics first and inks second.</p>
         </div>
         <div class="critter reveal">
-          <div class="fl"><img src="{{A:roe-jogan}}" alt="Roe Jogan" class="bob2" loading="lazy"></div>
+          <div class="fl"><img src="{{A:roe-jogan}}" alt="Roe Jogan" class="bob2" width="598" height="800" loading="lazy" decoding="async"></div>
           <div class="role">Long-form legend</div><h3>Roe Jogan</h3>
           <p>Three hours, one shell, and a lot of opinions. The reef is not ready for this conversation.</p>
         </div>
@@ -349,7 +390,7 @@
 
   <!-- ============ THREAT ============ -->
   <section id="threat">
-    <div class="swim" id="threat-whale"><div class="bob2"><img src="{{A:whale}}" alt="" width="1000" height="390"></div></div>
+    <div class="swim" id="threat-whale"><div class="bob2"><img src="{{A:whale}}" alt="A machine whale in the deep" width="1000" height="390" loading="lazy" decoding="async"></div></div>
     <div class="wrap">
       <div class="kicker red reveal">Classified // deep water</div>
       <h2 class="reveal">Not Every Machine<br>Was Built to Protect</h2>
@@ -361,7 +402,7 @@
 
   <!-- ============ WORLD ============ -->
   <section id="world">
-    <img class="bgimg" id="worldBg" src="{{A:temple}}" alt="The sunken temple of Fantasea" loading="lazy">
+    <img class="bgimg" id="worldBg" src="{{A:temple}}" alt="The sunken temple of Fantasea" width="1600" height="900" loading="lazy" decoding="async">
     <div class="veil"></div>
     <div class="wrap">
       <div class="kicker reveal">The world of Fantasea</div>
@@ -376,20 +417,22 @@
     <div class="wrap">
       <div class="comingsoon reveal">Coming Soon</div>
       <div class="posterframe" id="poster"><div class="art" role="img" aria-label="UNO: Guardians of the Deep — official poster"></div></div>
-      <a class="cta reveal" href="https://youtu.be/7RcKBipTxSE" target="_blank" rel="noopener"><span class="tri"></span>Watch the Trailer</a>
+      <a class="cta reveal" href="https://youtu.be/7RcKBipTxSE" target="_blank" rel="noopener noreferrer"><span class="tri"></span>Watch the Trailer</a>
     </div>
   </section>
 </main>
 
 <footer>
-  <b>UNO — Guardians of the Deep</b> · A Fantasea Adventure · © MMXXVI
+  <b>UNO — Guardians of the Deep</b> · A Fantasea Adventure · Official site · © 2026 Fantasea
 </footer>
 
 <script>
 (function(){
 'use strict';
 var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-var W = innerWidth, H = innerHeight, DPR = Math.min(devicePixelRatio || 1, 1.5);
+var saveData = !!(navigator.connection && navigator.connection.saveData);
+var isPhone = Math.min(innerWidth, innerHeight) < 760 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
+var W = innerWidth, H = innerHeight, DPR = Math.min(devicePixelRatio || 1, isPhone ? 1.15 : 1.5);
 
 /* ============================================================
    RAW WEBGL OCEAN — gradient depth, caustics, god rays, bubbles
@@ -486,8 +529,12 @@ var PT_FS = [
 '}'].join('\n');
 
 function initGL(){
+  if(reduced || saveData){
+    canvas.style.background = 'linear-gradient(180deg,#0b3a55 0%,#062036 45%,#03101f 100%)';
+    return;
+  }
   try{
-    gl = canvas.getContext('webgl', {antialias:true, alpha:false}) ||
+    gl = canvas.getContext('webgl', {antialias:!isPhone, alpha:false}) ||
          canvas.getContext('experimental-webgl');
     if(!gl) return;
     quadProg = prog(QUAD_VS, QUAD_FS);
@@ -507,7 +554,7 @@ function initGL(){
     P.pPos = gl.getAttribLocation(pointProg,'aPos');
     P.pA = gl.getAttribLocation(pointProg,'aAlpha');
 
-    var NB = 150, NM = 110, i;
+    var NB = isPhone ? 55 : 150, NM = isPhone ? 40 : 110, i;
     bubPos = new Float32Array(NB*3); bubAlpha = new Float32Array(NB);
     for(i=0;i<NB;i++){
       bubbles.push({x:Math.random()*W, y:Math.random()*H, s:4+Math.random()*10,
@@ -704,10 +751,11 @@ function initReveals(){
    BOOT
    ============================================================ */
 critFls = [].slice.call(document.querySelectorAll('.critter .fl'));
-initGL();
 measure();
 onScroll();
 initReveals();
+if('requestIdleCallback' in window) requestIdleCallback(initGL, {timeout:700});
+else setTimeout(initGL, 1);
 addEventListener('scroll', onScroll, {passive:true});
 addEventListener('resize', function(){ measure(); onScroll(); });
 addEventListener('mousemove', function(e){ tmx = (e.clientX/W - 0.5)*2; tmy = (e.clientY/H - 0.5)*2; });
