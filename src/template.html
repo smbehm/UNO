@@ -71,7 +71,6 @@
     --aqua:#35d0ff; --aqua-soft:#7fd8e8; --gold:#e7bd5c; --gold-hi:#f9edb0;
     --ink:#dff3ff; --ink-dim:#9db8cc; --panel:rgba(8,24,44,.55);
     --line:rgba(127,216,232,.22); --red:#ff4d5e;
-    --keyart:url("{{A:keyart}}");
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{
@@ -173,6 +172,16 @@
   #story-uno{width:clamp(260px,34vw,480px); top:22%; left:0; transform:translate3d(100%,0,0)}
   #cast-turtle{display:none}
   #threat-whale{width:clamp(300px,40vw,560px); top:12%; left:0; transform:translate3d(100%,0,0); filter:drop-shadow(0 0 44px rgba(80,255,150,.14)) drop-shadow(0 18px 30px rgba(0,0,0,.6))}
+  #finale-angler{width:clamp(210px,28vw,380px); bottom:3vh; left:0; z-index:4;
+    filter:drop-shadow(0 0 28px rgba(53,208,255,.28)) drop-shadow(0 18px 30px rgba(0,0,0,.5))}
+  .cruise{animation:swimAround 26s linear infinite}
+  @keyframes swimAround{
+    0%   {transform:translate3d(-45%,0,0) scaleX(1)}
+    46%  {transform:translate3d(105vw,-14px,0) scaleX(1)}
+    50%  {transform:translate3d(105vw,-14px,0) scaleX(-1)}
+    96%  {transform:translate3d(-45%,12px,0) scaleX(-1)}
+    100% {transform:translate3d(-45%,0,0) scaleX(1)}
+  }
 
   /* ---------- story ---------- */
   #story{padding-top:20vh}
@@ -241,15 +250,11 @@
   #world .lead{text-shadow:0 2px 14px rgba(0,0,0,.7); color:#cfe6f2}
 
   /* ---------- finale ---------- */
-  #finale{text-align:center; padding-top:20vh; padding-bottom:12vh;
+  #finale{text-align:center; padding-top:20vh; padding-bottom:18vh; overflow:hidden;
     background:linear-gradient(180deg,#020a14 0%, rgba(2,10,20,0) 34%)}
   .comingsoon{font-family:'Cinzel',serif; font-weight:900; letter-spacing:.5em; text-indent:.5em; font-size:clamp(20px,3.4vw,40px);
     background:linear-gradient(180deg,var(--gold-hi) 15%,#c9932b 55%,#f6e6a4 90%);
     -webkit-background-clip:text; background-clip:text; color:transparent; margin-bottom:44px}
-  .posterframe{width:min(1020px,100%); margin:0 auto; border-radius:24px; overflow:hidden; border:1px solid rgba(231,189,92,.35);
-    box-shadow:0 40px 120px rgba(0,0,0,.6), 0 0 120px rgba(53,208,255,.16); transform-style:preserve-3d}
-  .posterframe .art{width:100%; aspect-ratio:1500/844; display:block;
-    background:var(--keyart) center/cover no-repeat}
   .cta{display:inline-flex; align-items:center; gap:14px; margin-top:52px; padding:18px 44px; border-radius:999px;
     background:linear-gradient(135deg,#1b6f95,#35d0ff); color:#03202f; font-weight:700; font-size:17px; letter-spacing:.22em;
     text-transform:uppercase; text-decoration:none; box-shadow:0 14px 44px rgba(53,208,255,.35); transition:transform .3s, box-shadow .3s}
@@ -261,7 +266,8 @@
   .reveal{opacity:0; transform:translateY(36px); transition:opacity .9s ease, transform .95s cubic-bezier(.22,.61,.36,1)}
   .reveal.in{opacity:1; transform:translateY(0)}
   @media (prefers-reduced-motion: reduce){
-    .bob,.bob2,.scrollcue .chev,h1.logo img{animation:none}
+    .bob,.bob2,.cruise,.scrollcue .chev,h1.logo img{animation:none}
+    #finale-angler{left:auto; right:4%; bottom:6vh; transform:none}
     html{scroll-behavior:auto}
     .reveal{opacity:1; transform:none; transition:none}
   }
@@ -388,8 +394,8 @@
           <p>The reef's most volatile resident. Side effects may include extremely strange dreams.</p>
         </div>
         <div class="critter reveal">
-          <div class="fl"><img src="{{A:mantas}}" alt="Mantas the mantis shrimp" class="bob" width="800" height="742" loading="lazy" decoding="async" style="aspect-ratio:800/742"></div>
-          <div class="role">Claws first, questions last</div><h3>Mantas</h3>
+          <div class="fl"><img src="{{A:mantas}}" alt="Mantis the mantis shrimp" class="bob" width="800" height="742" loading="lazy" decoding="async" style="aspect-ratio:800/742"></div>
+          <div class="role">Claws first, questions last</div><h3>Mantis</h3>
           <p>The grumpiest crustacean in the Sea. Packs a punch with the power of the sun.</p>
         </div>
         <div class="critter reveal">
@@ -398,8 +404,8 @@
           <p class="quote">You got to put that love in action, if you want that satisfaction..</p>
         </div>
         <div class="critter reveal">
-          <div class="fl" style="padding-bottom:15px"><img src="{{A:octopus}}" alt="Octopus" class="bob" width="800" height="725" loading="lazy" decoding="async" style="aspect-ratio:800/725"></div>
-          <div class="role">Professional worrier</div><h3>Octopus</h3>
+          <div class="fl" style="padding-bottom:15px"><img src="{{A:octopus}}" alt="Xeno" class="bob" width="800" height="725" loading="lazy" decoding="async" style="aspect-ratio:800/725"></div>
+          <div class="role">Professional worrier</div><h3>Xeno</h3>
           <p>Eight arms, zero chill. If the current shifts, he panics first and inks second.</p>
         </div>
         <div class="critter reveal">
@@ -437,9 +443,19 @@
 
   <!-- ============ FINALE ============ -->
   <section id="finale">
+    <div class="swim cruise" id="finale-angler">
+      <div class="bob2"><img src="{{A:angler}}" alt="An anglerfish of Fantasea" width="1000" height="535" loading="lazy" decoding="async" style="aspect-ratio:1000/535"></div>
+    </div>
     <div class="wrap">
       <div class="comingsoon reveal">Coming Soon</div>
-      <div class="posterframe" id="poster"><div class="art" role="img" aria-label="UNO: Guardians of the Deep — official poster"></div></div>
+      <div class="trailer reveal">
+        <iframe
+          src="https://www.youtube.com/embed/7RcKBipTxSE?playsinline=1&rel=0"
+          title="UNO: Guardians of the Deep — Official Trailer"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+          allowfullscreen
+          loading="lazy"></iframe>
+      </div>
       <a class="cta reveal" href="https://youtu.be/7RcKBipTxSE" target="_blank" rel="noopener noreferrer"><span class="tri"></span>Watch the Trailer</a>
     </div>
   </section>
@@ -665,7 +681,6 @@ var heroUno = document.getElementById('hero-uno');
 var storyUno = document.getElementById('story-uno');
 var whale = document.getElementById('threat-whale');
 var worldBg = document.getElementById('worldBg');
-var poster = document.getElementById('poster');
 var sec = {};
 var zones = [['hero','SURFACE'],['story','THE STORY'],['cast','THE CREW'],['threat','RESTRICTED'],['world','FANTASEA'],['finale','THE DEEP']];
 var critFls = [];
@@ -733,11 +748,6 @@ function frame(ts){
     for(var i=0;i<critFls.length;i++){
       critFls[i].style.transform = 'translate3d(0,' + ((i%2 ? -1 : 1) * 26 * (p4*2-1)) + 'px,0)';
     }
-
-    // poster tilt-in
-    var r = poster.getBoundingClientRect();
-    var pp = Math.max(0, Math.min(1, (H - r.top) / (H*0.55)));
-    poster.style.transform = 'perspective(1000px) rotateX(' + (9*(1-pp)) + 'deg) translateY(' + (60*(1-pp)) + 'px)';
   }
   renderGL(ts/1000, dt);
 }
