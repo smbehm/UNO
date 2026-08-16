@@ -10,18 +10,30 @@ A WebGL-powered interactive landing page for the animated film *UNO: Guardians o
 - **Mobile Responsive**: Adapts to all screen sizes with optimized performance
 - **YouTube Integration**: Embedded trailer with reachability detection and file:// fallback
 
+## Live site
+
+The production site is served by Vercel:
+
+- **https://uno-x.world**
+- **https://www.uno-x.world**
+- https://uno-ashy.vercel.app
+
+Vercel (and GitHub Pages) serve `/` from `index.html`. The self-contained deliverable is also available as `uno-guardians-of-the-deep.html`. After editing, run `rebuild.py` so both files stay in sync.
+
 ## Quick Start
 
-1. Download `uno-guardians-of-the-deep.html`
-2. Open in any modern browser (Chrome, Firefox, Safari, Edge)
-3. No installation, dependencies, or internet required
+1. Open https://uno-x.world — or download `index.html` / `uno-guardians-of-the-deep.html`
+2. Open the HTML file in any modern browser (Chrome, Firefox, Safari, Edge)
+3. No installation or dependencies required for the local file
 
 ## Development
 
 ### File Structure
 ```
 .
-├── uno-guardians-of-the-deep.html     # Final self-contained deliverable (1.7MB)
+├── index.html                         # Production homepage for Vercel / GitHub Pages
+├── uno-guardians-of-the-deep.html     # Same self-contained deliverable (1.7MB)
+├── vercel.json                        # Serves "/" as the homepage
 ├── src/
 │   ├── template.html                  # HTML template with placeholders
 │   ├── app.js                         # WebGL engine (integrated into template)
@@ -37,7 +49,7 @@ A WebGL-powered interactive landing page for the animated film *UNO: Guardians o
 **To update text** (character bios, act names, etc.):
 1. Edit `src/template.html`
 2. Run `rebuild.py`
-3. Deploy new `uno-guardians-of-the-deep.html`
+3. Deploy the updated `index.html` (and `uno-guardians-of-the-deep.html`)
 
 **To replace an image**:
 1. Add new image to `assets/`

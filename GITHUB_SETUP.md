@@ -14,6 +14,20 @@
    git push -u origin main
    ```
 
+## Vercel Deployment (uno-x.world)
+
+This repo is already connected to Vercel (`uno-ashy.vercel.app`) with the custom domain **uno-x.world**.
+
+Vercel serves `/` from `index.html`. `vercel.json` also rewrites `/` to `uno-guardians-of-the-deep.html`, so the homepage works either way.
+
+Push to `main` and Vercel will redeploy automatically. After a successful deploy:
+
+- https://uno-x.world
+- https://www.uno-x.world
+- https://uno-ashy.vercel.app
+
+If the custom domain ever shows a Vercel 404 while those URLs work, confirm in the Vercel dashboard that `uno-x.world` and `www.uno-x.world` are attached to this project.
+
 ## GitHub Pages Deployment
 
 To host this on GitHub Pages:
@@ -22,15 +36,17 @@ To host this on GitHub Pages:
 2. **Source**: Deploy from a branch → `main`
 3. **Folder**: root `/`
 4. **Wait 1-2 minutes** for deployment
-5. **Access** at: `https://YOUR_USERNAME.github.io/uno-guardians-of-the-deep/`
+5. **Access** at: `https://YOUR_USERNAME.github.io/UNO/`
 
-Your landing page will be live and publicly accessible.
+Your landing page will be live and publicly accessible (`index.html` is the homepage).
 
 ## File Structure in Repository
 
 ```
 uno-guardians-of-the-deep/
+├── index.html                       ← Homepage for Vercel / GitHub Pages
 ├── uno-guardians-of-the-deep.html   ← Main deliverable (1.7MB)
+├── vercel.json                      ← Rewrites "/" to the homepage
 ├── README.md                         ← Project overview
 ├── GITHUB_SETUP.md                   ← This file
 ├── rebuild.py                        ← Update script
@@ -74,8 +90,10 @@ uno-guardians-of-the-deep/
 
 ## Troubleshooting
 
-**Page won't load**:
-- Verify `uno-guardians-of-the-deep.html` exists in root
+**Page won't load / Vercel 404 on /**:
+- Verify `index.html` exists in the repository root
+- Confirm `vercel.json` rewrites `/` to `uno-guardians-of-the-deep.html`
+- Direct file URL still works: `/uno-guardians-of-the-deep.html`
 - Check browser console (F12) for errors
 - Try a different browser (Chrome recommended)
 

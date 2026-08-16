@@ -30,13 +30,14 @@ def rebuild():
         else:
             print(f"  - {key}: no placeholder in template")
     
-    # Write final file
+    # Write production file and index.html (Vercel / GitHub Pages serve "/" from index.html)
     os.makedirs('.', exist_ok=True)
-    with open('uno-guardians-of-the-deep.html', 'w') as f:
-        f.write(html)
-    
-    size_kb = os.path.getsize('uno-guardians-of-the-deep.html') // 1024
-    print(f"\n✅ Rebuilt {inlined} assets → uno-guardians-of-the-deep.html ({size_kb}KB)")
+    for out_name in ('uno-guardians-of-the-deep.html', 'index.html'):
+        with open(out_name, 'w') as f:
+            f.write(html)
+
+    size_kb = os.path.getsize('index.html') // 1024
+    print(f"\n✅ Rebuilt {inlined} assets → index.html and uno-guardians-of-the-deep.html ({size_kb}KB)")
 
 if __name__ == '__main__':
     rebuild()
