@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UNO — Guardians of the Deep | A Fantasea Adventure</title>
+<meta name="description" content="A Fantasea animated adventure: a dolphin given a second chance, a secret lab beneath the waves, and a fight to heal the ocean. Watch the official trailer.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Fantasea">
+<meta name="theme-color" content="#03101f">
+<link rel="canonical" href="https://www.uno-x.world/">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="UNO: Guardians of the Deep">
+<meta property="og:url" content="https://www.uno-x.world/">
+<meta property="og:title" content="UNO: Guardians of the Deep">
+<meta property="og:description" content="A Fantasea animated adventure: a dolphin given a second chance, a secret lab beneath the waves, and a fight to heal the ocean. Watch the official trailer.">
+<meta property="og:image" content="https://www.uno-x.world/og.jpg">
+<meta property="og:image:secure_url" content="https://www.uno-x.world/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="720">
+<meta property="og:image:alt" content="UNO: Guardians of the Deep — official trailer">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="UNO: Guardians of the Deep">
+<meta name="twitter:description" content="A Fantasea animated adventure: a dolphin given a second chance, a secret lab beneath the waves, and a fight to heal the ocean. Watch the official trailer.">
+<meta name="twitter:image" content="https://www.uno-x.world/og.jpg">
+<link rel="preload" as="image" href="/assets/logo.webp" type="image/webp" fetchpriority="high">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://www.youtube.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap"></noscript>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "UNO: Guardians of the Deep",
+      "url": "https://www.uno-x.world/",
+      "description": "Official site for the animated film UNO: Guardians of the Deep, a Fantasea adventure.",
+      "publisher": { "@type": "Organization", "name": "Fantasea", "url": "https://www.uno-x.world/" }
+    },
+    {
+      "@type": "Movie",
+      "name": "UNO: Guardians of the Deep",
+      "url": "https://www.uno-x.world/",
+      "image": "https://www.uno-x.world/og.jpg",
+      "description": "A curious dolphin is given a second chance by a kind scientist and a brave young woman. Together they inspire a movement that frees captive animals, heals the oceans, and teaches technology how to care.",
+      "genre": ["Animation", "Adventure", "Family"],
+      "inLanguage": "en",
+      "productionCompany": { "@type": "Organization", "name": "Fantasea" },
+      "trailer": {
+        "@type": "VideoObject",
+        "name": "UNO: Guardians of the Deep — Official Trailer",
+        "description": "Watch the official trailer for UNO: Guardians of the Deep.",
+        "thumbnailUrl": "https://www.uno-x.world/og.jpg",
+        "embedUrl": "https://www.youtube.com/embed/7RcKBipTxSE",
+        "contentUrl": "https://www.youtube.com/watch?v=7RcKBipTxSE",
+        "uploadDate": "2026-01-01"
+      }
+    }
+  ]
+}
+</script>
+<style>
+  :root{
+    --aqua:#35d0ff; --aqua-soft:#7fd8e8; --gold:#e7bd5c; --gold-hi:#f9edb0;
+    --ink:#dff3ff; --ink-dim:#9db8cc; --panel:rgba(8,24,44,.55);
+    --line:rgba(127,216,232,.22); --red:#ff4d5e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{
+    scroll-behavior:smooth;
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+    overflow-x:clip;
+  }
+  body{
+    background:#03101f; color:var(--ink);
+    font-family:'Rajdhani',system-ui,sans-serif; font-size:18px; line-height:1.6;
+    width:100%; max-width:100%;
+    overflow-x:hidden; overflow-x:clip;
+    overscroll-behavior-x:none;
+    touch-action:pan-y;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+  }
+  main, section{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+    overflow-x:clip;
+  }
+  ::selection{background:rgba(53,208,255,.35)}
+  #ocean{position:fixed; inset:0; z-index:0; pointer-events:none}
+  main{position:relative; z-index:2}
+  section{position:relative; padding:14vh 6vw}
+  .wrap{max-width:1180px; margin:0 auto; position:relative; z-index:3}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px; transition:background .4s,backdrop-filter .4s,border-color .4s;
+    border-bottom:1px solid transparent;
+  }
+  nav.scrolled{background:rgba(3,12,24,.72); backdrop-filter:blur(12px); border-color:rgba(127,216,232,.12)}
+  .brand{font-family:'Cinzel',serif; font-weight:900; letter-spacing:.18em; font-size:18px; color:var(--ink); text-decoration:none; white-space:nowrap}
+  .brand em{font-style:normal; color:var(--aqua)}
+  .navlinks{display:flex; gap:30px; align-items:center}
+  .navlinks a{color:var(--ink-dim); text-decoration:none; font-weight:600; letter-spacing:.22em; font-size:13px; text-transform:uppercase; transition:color .25s}
+  .navlinks a:hover{color:var(--aqua)}
+  .navlinks a.yt{color:var(--gold)} .navlinks a.yt:hover{color:var(--gold-hi)}
+  @media(max-width:760px){.navlinks a:not(.yt){display:none} .brand .bsub{display:none}}
+
+  /* ---------- depth hud ---------- */
+  #hud{position:fixed; right:26px; top:50%; transform:translateY(-50%); z-index:55;
+    display:flex; flex-direction:column; align-items:center; gap:10px; pointer-events:none}
+  #hud .lbl{font-size:10px; letter-spacing:.34em; color:var(--ink-dim)}
+  #hud .track{width:2px; height:38vh; background:rgba(127,216,232,.18); position:relative; border-radius:2px}
+  #hud .dot{position:absolute; left:50%; top:0; width:10px; height:10px; border-radius:50%;
+    background:var(--aqua); transform:translate(-50%,-50%); box-shadow:0 0 12px var(--aqua), 0 0 30px rgba(53,208,255,.5)}
+  #hud .m{font-size:15px; font-weight:700; letter-spacing:.12em; color:var(--aqua-soft); font-variant-numeric:tabular-nums}
+  #hud .zone{font-size:10px; letter-spacing:.3em; color:var(--ink-dim); writing-mode:vertical-rl; text-orientation:mixed}
+  @media(max-width:980px){#hud{display:none}}
+
+  /* ---------- type ---------- */
+  .kicker{font-size:13px; font-weight:700; letter-spacing:.5em; text-transform:uppercase; color:var(--aqua); margin-bottom:18px}
+  .kicker.gold{color:var(--gold)} .kicker.red{color:var(--red)}
+  h2{font-family:'Cinzel',serif; font-weight:900; font-size:clamp(30px,4.6vw,58px); line-height:1.12; letter-spacing:.04em; margin-bottom:22px; color:#f2fbff}
+  .lead{font-size:clamp(17px,1.6vw,21px); color:var(--ink-dim); max-width:64ch; font-weight:500}
+
+  /* ---------- hero ---------- */
+  #hero{min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding-top:11vh; padding-bottom:8vh}
+  h1.logo{margin:0 auto; line-height:0; position:relative; z-index:4}
+  h1.logo img{
+    display:block; margin:0 auto; width:min(760px,90vw); height:auto;
+    filter:drop-shadow(0 0 60px rgba(53,208,255,.30)) drop-shadow(0 0 130px rgba(231,189,92,.18))
+           drop-shadow(0 22px 44px rgba(0,0,0,.5));
+    animation:logoFloat 8s ease-in-out infinite alternate;
+  }
+  @keyframes logoFloat{from{transform:translateY(-7px) scale(1)} to{transform:translateY(7px) scale(1.012)}}
+  .logline{max-width:62ch; margin:26px auto 34px; color:var(--ink-dim); font-size:clamp(16px,1.6vw,19px); font-weight:500}
+  @media(max-height:820px){h1.logo img{width:min(620px,88vw)} .logline{margin:20px auto 26px}}
+  .logline b{color:var(--ink); font-weight:600}
+
+  .trailer{position:relative; width:min(940px,100%); aspect-ratio:16/9; margin:0 auto; border-radius:22px; overflow:hidden;
+    border:1px solid rgba(127,216,232,.4); box-shadow:0 30px 90px rgba(0,0,0,.55), 0 0 90px rgba(53,208,255,.22);
+    background:#03101f}
+  .trailer iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
+
+  .scrollcue{margin-top:56px; display:inline-flex; flex-direction:column; align-items:center; gap:8px; color:var(--ink-dim);
+    font-size:12px; letter-spacing:.5em; text-transform:uppercase; font-weight:600}
+  .scrollcue .chev{width:20px; height:20px; border-right:2px solid var(--aqua); border-bottom:2px solid var(--aqua);
+    transform:rotate(45deg); animation:sink 1.8s ease-in-out infinite}
+  @keyframes sink{0%,100%{transform:rotate(45deg) translate(0,0); opacity:.4} 50%{transform:rotate(45deg) translate(7px,7px); opacity:1}}
+
+  /* ---------- swimmers ---------- */
+  .swim{position:absolute; pointer-events:none; z-index:2; will-change:transform; filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
+  .swim img{width:100%; height:auto; display:block; object-fit:contain}
+  .bob{animation:bob 5.2s ease-in-out infinite alternate}
+  .bob2{animation:bob 6.8s ease-in-out .9s infinite alternate}
+  @keyframes bob{from{transform:translateY(-13px) rotate(-2.4deg)} to{transform:translateY(13px) rotate(2.6deg)}}
+  #hero-uno{width:clamp(200px,25vw,370px); right:1%; top:11vh; z-index:1; opacity:.96}
+  @media(max-width:1100px){#hero-uno{width:210px; top:8vh; right:-8%}}
+  @media(max-width:760px){#hero-uno{width:150px; top:5vh; right:-10%}}
+  #story-uno{width:clamp(260px,34vw,480px); top:22%; left:0; transform:translate3d(100%,0,0)}
+  #cast-turtle{display:none}
+  #threat-whale{width:clamp(300px,40vw,560px); top:12%; left:0; transform:translate3d(100%,0,0); filter:drop-shadow(0 0 44px rgba(80,255,150,.14)) drop-shadow(0 18px 30px rgba(0,0,0,.6))}
+  #finale-angler{width:clamp(210px,28vw,380px); bottom:3vh; left:0; z-index:4;
+    filter:drop-shadow(0 0 28px rgba(53,208,255,.28)) drop-shadow(0 18px 30px rgba(0,0,0,.5))}
+  .cruise{animation:swimAround 26s linear infinite}
+  @keyframes swimAround{
+    0%   {transform:translate3d(-45%,0,0) scaleX(1)}
+    46%  {transform:translate3d(105vw,-14px,0) scaleX(1)}
+    50%  {transform:translate3d(105vw,-14px,0) scaleX(-1)}
+    96%  {transform:translate3d(-45%,12px,0) scaleX(-1)}
+    100% {transform:translate3d(-45%,0,0) scaleX(1)}
+  }
+
+  /* ---------- story ---------- */
+  #story{padding-top:20vh}
+  .beats{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:26px; margin-top:54px}
+  .beat{background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:34px 30px; backdrop-filter:blur(9px);
+    transition:transform .35s, border-color .35s}
+  .beat:hover{transform:translateY(-7px); border-color:rgba(53,208,255,.5)}
+  .beat .no{font-family:'Cinzel',serif; font-weight:900; font-size:15px; color:var(--aqua); letter-spacing:.3em; margin-bottom:14px}
+  .beat h3{font-family:'Cinzel',serif; font-size:22px; font-weight:700; letter-spacing:.05em; margin-bottom:12px; color:#f2fbff}
+  .beat p{color:var(--ink-dim); font-size:16.5px}
+  .story-outro{margin-top:60px; text-align:center; font-family:'Cinzel',serif; font-size:clamp(18px,2.4vw,28px); font-weight:700;
+    letter-spacing:.08em; color:var(--aqua-soft)}
+
+  /* ---------- cast ---------- */
+  .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:24px; margin-top:54px}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:20px; overflow:hidden; backdrop-filter:blur(9px);
+    transition:transform .35s, border-color .35s, box-shadow .35s}
+  .card:hover{transform:translateY(-8px); border-color:rgba(53,208,255,.55); box-shadow:0 24px 60px rgba(0,0,0,.45)}
+  .card .ph{aspect-ratio:3/3.4; overflow:hidden; position:relative}
+  .card .ph img{width:100%; height:100%; object-fit:cover; object-position:top center; display:block; transition:transform .6s ease}
+  .card:hover .ph img{transform:scale(1.06)}
+  .card .ph::after{content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(3,16,31,0) 62%,rgba(5,18,34,.9) 100%)}
+  .card .tx{padding:18px 22px 24px}
+  .card .role{font-size:11px; font-weight:700; letter-spacing:.34em; color:var(--gold); text-transform:uppercase; margin-bottom:6px}
+  .card h3{font-family:'Cinzel',serif; font-size:23px; font-weight:700; letter-spacing:.06em; margin-bottom:8px}
+  .card p{color:var(--ink-dim); font-size:15.5px; line-height:1.55}
+
+  .reefhead{margin:80px 0 10px; text-align:center}
+  .reefhead .kicker{margin-bottom:8px}
+  .reef{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:24px; margin-top:40px; align-items:end}
+  .critter{text-align:center; padding:10px 14px 26px; border-radius:20px; transition:background .35s}
+  .critter:hover{background:rgba(53,208,255,.06)}
+  .critter .fl{display:flex; align-items:flex-end; justify-content:center; height:230px; margin-bottom:14px}
+  .critter img{
+    width:auto; height:auto;
+    max-height:230px; max-width:92%;
+    object-fit:contain; object-position:bottom center;
+    flex:0 0 auto;
+    filter:drop-shadow(0 20px 28px rgba(0,0,0,.5))
+  }
+  .critter .role{font-size:10.5px; font-weight:700; letter-spacing:.32em; color:var(--aqua); text-transform:uppercase; margin-bottom:5px}
+  .critter h3{font-family:'Cinzel',serif; font-size:21px; letter-spacing:.06em; margin-bottom:7px}
+  .critter p{color:var(--ink-dim); font-size:15px; max-width:30ch; margin:0 auto}
+  .critter p.quote{font-style:italic; color:var(--aqua-soft)}
+  .critter p.quote::before{content:'\201C'} .critter p.quote::after{content:'\201D'}
+  .reefwide{grid-column:1/-1; display:flex; gap:26px; align-items:center; background:var(--panel); border:1px solid var(--line);
+    border-radius:20px; overflow:hidden; backdrop-filter:blur(9px)}
+  .reefwide img{width:min(340px,42%); align-self:stretch; object-fit:cover}
+  .reefwide .tx{padding:26px 28px}
+  @media(max-width:640px){.reefwide{flex-direction:column} .reefwide img{width:100%}}
+
+  /* ---------- threat ---------- */
+  #threat{padding-top:22vh; padding-bottom:22vh; text-align:center}
+  #threat .wrap{max-width:840px}
+  #threat h2{color:#ffdfe2}
+  #threat .lead{margin:0 auto}
+  .classified{display:inline-block; margin-top:34px; padding:10px 24px; border:1px dashed rgba(255,77,94,.55); border-radius:8px;
+    color:var(--red); font-size:12px; font-weight:700; letter-spacing:.5em; text-transform:uppercase; background:rgba(60,6,14,.25)}
+
+  /* ---------- world ---------- */
+  #world{padding:0; min-height:120vh; display:flex; align-items:flex-end; overflow:hidden}
+  #world .bgimg{position:absolute; inset:-6% 0; width:100%; height:112%; object-fit:cover; z-index:0; will-change:transform}
+  #world .veil{position:absolute; inset:0; z-index:1;
+    background:linear-gradient(180deg,#03101f 0%,rgba(3,16,31,0) 24%,rgba(3,16,31,0) 58%,rgba(2,10,20,.75) 84%,#020a14 100%)}
+  #world .wrap{padding:0 6vw 16vh; z-index:2}
+  #world .lead{text-shadow:0 2px 14px rgba(0,0,0,.7); color:#cfe6f2}
+
+  /* ---------- finale ---------- */
+  #finale{text-align:center; padding-top:20vh; padding-bottom:18vh; overflow:hidden;
+    background:linear-gradient(180deg,#020a14 0%, rgba(2,10,20,0) 34%)}
+  .comingsoon{font-family:'Cinzel',serif; font-weight:900; letter-spacing:.5em; text-indent:.5em; font-size:clamp(20px,3.4vw,40px);
+    background:linear-gradient(180deg,var(--gold-hi) 15%,#c9932b 55%,#f6e6a4 90%);
+    -webkit-background-clip:text; background-clip:text; color:transparent; margin-bottom:44px}
+  .cta{display:inline-flex; align-items:center; gap:14px; margin-top:52px; padding:18px 44px; border-radius:999px;
+    background:linear-gradient(135deg,#1b6f95,#35d0ff); color:#03202f; font-weight:700; font-size:17px; letter-spacing:.22em;
+    text-transform:uppercase; text-decoration:none; box-shadow:0 14px 44px rgba(53,208,255,.35); transition:transform .3s, box-shadow .3s}
+  .cta:hover{transform:translateY(-3px); box-shadow:0 20px 60px rgba(53,208,255,.5)}
+  .cta .tri{width:0; height:0; border-style:solid; border-width:8px 0 8px 14px; border-color:transparent transparent transparent #03202f}
+  footer{position:relative; z-index:2; text-align:center; padding:40px 6vw 60px; color:#5c7789; font-size:13px; letter-spacing:.24em; text-transform:uppercase}
+  footer b{color:#8aa7ba}
+
+  .reveal{opacity:0; transform:translateY(36px); transition:opacity .9s ease, transform .95s cubic-bezier(.22,.61,.36,1)}
+  .reveal.in{opacity:1; transform:translateY(0)}
+  @media (prefers-reduced-motion: reduce){
+    .bob,.bob2,.cruise,.scrollcue .chev,h1.logo img{animation:none}
+    #finale-angler{left:auto; right:4%; bottom:6vh; transform:none}
+    html{scroll-behavior:auto}
+    .reveal{opacity:1; transform:none; transition:none}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="ocean" aria-hidden="true"></canvas>
+
+<nav id="nav" aria-label="Main">
+  <a class="brand" href="#hero">UNO<span class="bsub"><em> · </em>GUARDIANS OF THE DEEP</span></a>
+  <div class="navlinks">
+    <a href="#hero">Trailer</a>
+    <a href="#story">Story</a>
+    <a href="#cast">The Crew</a>
+    <a href="#world">Fantasea</a>
+    <a class="yt" href="https://youtu.be/7RcKBipTxSE" target="_blank" rel="noopener noreferrer">▶ YouTube</a>
+  </div>
+</nav>
+
+<div id="hud" aria-hidden="true">
+  <div class="lbl">DEPTH</div>
+  <div class="track"><div class="dot" id="hudDot"></div></div>
+  <div class="m" id="hudM">0 m</div>
+  <div class="zone" id="hudZone">SURFACE</div>
+</div>
+
+<main>
+  <!-- ============ HERO ============ -->
+  <section id="hero">
+    <div class="swim bob" id="hero-uno"><img src="/assets/uno-hero.webp" alt="Uno, the cyborg dolphin" width="900" height="869" decoding="async" style="aspect-ratio:900/869"></div>
+    <div class="wrap">
+      <h1 class="logo reveal">
+        <img src="/assets/logo.webp" width="1350" height="719"
+             alt="UNO: Guardians of the Deep — A Fantasea Adventure" fetchpriority="high" decoding="async" style="aspect-ratio:1350/719">
+      </h1>
+      <p class="logline reveal">A curious dolphin is given a second chance by a kind scientist and a brave young woman —
+        and together they inspire a movement that <b>frees captive animals</b>, <b>heals the oceans</b>,
+        and <b>teaches technology how to care</b>.</p>
+      <div class="trailer reveal">
+        <iframe
+          src="https://www.youtube.com/embed/7RcKBipTxSE?playsinline=1&rel=0"
+          title="UNO: Guardians of the Deep — Official Trailer"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+          allowfullscreen
+          loading="lazy"></iframe>
+      </div>
+      <div class="scrollcue reveal">Dive Deeper<span class="chev"></span></div>
+    </div>
+  </section>
+
+  <!-- ============ STORY ============ -->
+  <section id="story">
+    <div class="swim" id="story-uno"><div class="bob2"><img src="/assets/uno-side.webp" alt="Uno swimming" width="1000" height="505" loading="lazy" decoding="async" style="aspect-ratio:1000/505"></div></div>
+    <div class="wrap">
+      <div class="kicker reveal">From the surface to the deep</div>
+      <h2 class="reveal">The Story So Far</h2>
+      <p class="lead reveal">Some machines are built to take from the ocean. One was built to give something back.</p>
+      <div class="beats">
+        <article class="beat reveal">
+          <div class="no">ACT 1</div>
+          <h3>Two Brothers. One Choice.</h3>
+          <p>Twenty years ago, off the Australian coast, two brothers pulled a young dolphin from their nets — and chose
+            very different futures. One built an empire above the waves. The other disappeared beneath them.</p>
+        </article>
+        <article class="beat reveal">
+          <div class="no">ACT 2</div>
+          <h3>Prototype 001</h3>
+          <p>In a hidden laboratory on the ocean floor, a gentle genius gives a critically injured dolphin a second
+            chance: half biological, half machine. The first of his kind.</p>
+        </article>
+        <article class="beat reveal">
+          <div class="no">ACT 3</div>
+          <h3>She Named Him Uno</h3>
+          <p>When the prototype collides with a fearless young woman named Sarah, she sees past the serial number — and
+            gives him the one upgrade no engineer ever could: a heart &amp; name.</p>
+        </article>
+      </div>
+      <p class="story-outro reveal">“And somewhere below, the ocean is choosing its guardian.”</p>
+    </div>
+  </section>
+
+  <!-- ============ CAST ============ -->
+  <section id="cast">
+    <div class="wrap">
+      <div class="kicker gold reveal">Heroes, showmen &amp; reef legends</div>
+      <h2 class="reveal">Meet the Crew</h2>
+      <div class="cards">
+        <article class="card reveal">
+          <div class="ph"><img src="/assets/sarah.webp" alt="Sarah, the brave heart" width="719" height="820" loading="lazy" decoding="async" style="aspect-ratio:719/820"></div>
+          <div class="tx"><div class="role">The Brave Heart</div><h3>Sarah</h3>
+          <p>A bio-engineering student who grew up pressing her hand against the aquarium glass. She never stopped listening.</p></div>
+        </article>
+        <article class="card reveal">
+          <div class="ph"><img src="/assets/elias.webp" alt="Elias, the kind scientist" width="577" height="820" loading="lazy" decoding="async" style="aspect-ratio:577/820"></div>
+          <div class="tx"><div class="role">The Kind Scientist</div><h3>Elias</h3>
+          <p>A genius who traded the surface for a secret lab beneath the waves — building machines that protect instead of take.</p></div>
+        </article>
+        <article class="card reveal">
+          <div class="ph"><img src="/assets/marty.webp" alt="Marty, the showman" width="613" height="820" loading="lazy" decoding="async" style="aspect-ratio:613/820"></div>
+          <div class="tx"><div class="role">The Showman</div><h3>Marty</h3>
+          <p>King of the Aquapark empire. Every smile is box office — and every promise comes with fine print.</p></div>
+        </article>
+        <article class="card reveal">
+          <div class="ph"><img src="/assets/ivanka.webp" alt="Ivanka, Aquapark royalty" width="1000" height="558" style="object-position:center 20%;aspect-ratio:1000/558" loading="lazy" decoding="async"></div>
+          <div class="tx"><div class="role">The Trophy Wife</div><h3>Ivanka</h3>
+          <p>Aquapark royalty. The diamonds are real. The smile is negotiable.</p></div>
+        </article>
+      </div>
+
+      <div class="reefhead">
+        <div class="kicker reveal">Deep-sea comedy department</div>
+        <h2 class="reveal" style="font-size:clamp(24px,3.2vw,40px)">The Reef Crew</h2>
+      </div>
+      <div class="reef">
+        <div class="critter reveal">
+          <div class="fl"><img src="/assets/turtle.webp" alt="The Ancient Turtle" class="bob" width="635" height="520" loading="lazy" decoding="async" style="aspect-ratio:635/520"></div>
+          <div class="role">Elder of the Deep</div><h3>The Ancient One</h3>
+          <p class="quote">If you want to go fast, you go alone. If you want to go far, you go together.</p>
+        </div>
+        <div class="critter reveal">
+          <div class="fl"><img src="/assets/puffy.webp" alt="Puffy the pufferfish" class="bob2" width="578" height="504" loading="lazy" decoding="async" style="aspect-ratio:578/504"></div>
+          <div class="role">Do not swallow</div><h3>Puffy</h3>
+          <p>The reef's most volatile resident. Side effects may include extremely strange dreams.</p>
+        </div>
+        <div class="critter reveal">
+          <div class="fl"><img src="/assets/mantas.webp" alt="Mantis the mantis shrimp" class="bob" width="800" height="742" loading="lazy" decoding="async" style="aspect-ratio:800/742"></div>
+          <div class="role">Claws first, questions last</div><h3>Mantis</h3>
+          <p>The grumpiest crustacean in the Sea. Packs a punch with the power of the sun.</p>
+        </div>
+        <div class="critter reveal">
+          <div class="fl"><img src="/assets/krabby.webp" alt="Krabby the crab" class="bob2" width="774" height="520" loading="lazy" decoding="async" style="aspect-ratio:774/520"></div>
+          <div class="role">Heart of the reef</div><h3>Krabby</h3>
+          <p class="quote">You got to put that love in action, if you want that satisfaction..</p>
+        </div>
+        <div class="critter reveal">
+          <div class="fl" style="padding-bottom:15px"><img src="/assets/octopus.webp" alt="Xeno" class="bob" width="800" height="725" loading="lazy" decoding="async" style="aspect-ratio:800/725"></div>
+          <div class="role">Professional worrier</div><h3>Xeno</h3>
+          <p>Eight arms, zero chill. If the current shifts, he panics first and inks second.</p>
+        </div>
+        <div class="critter reveal">
+          <div class="fl"><img src="/assets/roe-jogan.webp" alt="Roe Jogan" class="bob2" width="598" height="800" loading="lazy" decoding="async" style="aspect-ratio:598/800"></div>
+          <div class="role">Long-form legend</div><h3>Roe Jogan</h3>
+          <p>Three hours, one shell, and a lot of opinions. The reef is not ready for this conversation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THREAT ============ -->
+  <section id="threat">
+    <div class="swim" id="threat-whale"><div class="bob2"><img src="/assets/whale.webp" alt="A machine whale in the deep" width="1000" height="390" loading="lazy" decoding="async" style="aspect-ratio:1000/390"></div></div>
+    <div class="wrap">
+      <div class="kicker red reveal">Classified // deep water</div>
+      <h2 class="reveal">Not Every Machine<br>Was Built to Protect</h2>
+      <p class="lead reveal">Far below the shipping lanes, something is moving through the dark — sleek, silent,
+        and learning fast. The ocean is about to find out whose side its machines are on.</p>
+      <div class="classified reveal">Guardians — Restricted Build</div>
+    </div>
+  </section>
+
+  <!-- ============ WORLD ============ -->
+  <section id="world">
+    <img class="bgimg" id="worldBg" src="/assets/temple.webp" alt="The sunken temple of Fantasea" width="1600" height="900" loading="lazy" decoding="async">
+    <div class="veil"></div>
+    <div class="wrap">
+      <div class="kicker reveal">The world of Fantasea</div>
+      <h2 class="reveal">An Ocean of Wonder</h2>
+      <p class="lead reveal">Coral cities. Ancient temples. Glowing depths that have never seen the sun.
+        Fantasea is both playground and sacred space — and it is worth fighting for.</p>
+    </div>
+  </section>
+
+  <!-- ============ FINALE ============ -->
+  <section id="finale">
+    <div class="swim cruise" id="finale-angler">
+      <div class="bob2"><img src="/assets/angler.webp" alt="An anglerfish of Fantasea" width="1000" height="535" loading="lazy" decoding="async" style="aspect-ratio:1000/535"></div>
+    </div>
+    <div class="wrap">
+      <div class="comingsoon reveal">Coming Soon</div>
+      <div class="trailer reveal">
+        <iframe
+          src="https://www.youtube.com/embed/7RcKBipTxSE?playsinline=1&rel=0"
+          title="UNO: Guardians of the Deep — Official Trailer"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+          allowfullscreen
+          loading="lazy"></iframe>
+      </div>
+      <a class="cta reveal" href="https://youtu.be/7RcKBipTxSE" target="_blank" rel="noopener noreferrer"><span class="tri"></span>Watch the Trailer</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <b>UNO — Guardians of the Deep</b> · A Fantasea Adventure · Official site · © 2026 Fantasea
+</footer>
+
+<script>
+(function(){
+'use strict';
+var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var saveData = !!(navigator.connection && navigator.connection.saveData);
+var isPhone = Math.min(innerWidth, innerHeight) < 760 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
+var W = innerWidth, H = innerHeight, DPR = Math.min(devicePixelRatio || 1, isPhone ? 1.15 : 1.5);
+
+/* ============================================================
+   RAW WEBGL OCEAN — gradient depth, caustics, god rays, bubbles
+   ============================================================ */
+var canvas = document.getElementById('ocean');
+var gl = null, glOK = false;
+var quadProg, pointProg, quadBuf, depthGL = 0;
+var U = {}, P = {};
+var bubbles = [], motes = [], bubBuf, bubAlphaBuf, moteBuf, moteAlphaBuf;
+var bubPos, bubAlpha, motePos, moteAlpha;
+
+function sh(type, src){
+  var s = gl.createShader(type);
+  gl.shaderSource(s, src); gl.compileShader(s);
+  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){
+    console.error('shader: ' + gl.getShaderInfoLog(s)); return null;
+  }
+  return s;
+}
+function prog(vs, fs){
+  var p = gl.createProgram();
+  var v = sh(gl.VERTEX_SHADER, vs), f = sh(gl.FRAGMENT_SHADER, fs);
+  if(!v || !f) return null;
+  gl.attachShader(p, v); gl.attachShader(p, f); gl.linkProgram(p);
+  if(!gl.getProgramParameter(p, gl.LINK_STATUS)){
+    console.error('link: ' + gl.getProgramInfoLog(p)); return null;
+  }
+  return p;
+}
+
+var QUAD_VS = [
+'attribute vec2 aPos;',
+'varying vec2 vUv;',
+'void main(){ vUv = aPos*0.5+0.5; gl_Position = vec4(aPos,0.,1.); }'].join('\n');
+
+var QUAD_FS = [
+'precision mediump float;',
+'varying vec2 vUv;',
+'uniform float uT; uniform float uDepth; uniform vec2 uRes;',
+'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }',
+'void main(){',
+'  vec3 surfTop = vec3(0.10,0.42,0.58), surfBot = vec3(0.015,0.115,0.22);',
+'  vec3 deepTop = vec3(0.012,0.060,0.135), deepBot = vec3(0.002,0.012,0.040);',
+'  vec3 top = mix(surfTop, deepTop, uDepth), bot = mix(surfBot, deepBot, uDepth);',
+'  vec3 col = mix(bot, top, pow(clamp(vUv.y,0.,1.), 0.95));',
+'  float cz = smoothstep(0.45,1.0,vUv.y)*(1.0-uDepth*0.92);',
+'  float c1 = sin(vUv.x*34.0 + uT*0.9 + sin(vUv.y*10.0 + uT*0.6)*1.4);',
+'  float c2 = sin(vUv.x*21.0 - uT*0.7 + vUv.y*14.0);',
+'  float ca = pow(max(0.0, c1*c2), 3.0);',
+'  col += cz*ca*vec3(0.045,0.11,0.13);',
+'  float ax = vUv.x*uRes.x/uRes.y;',
+'  float rays = 0.0;',
+'  for(int i=0;i<6;i++){',
+'    float fi = float(i);',
+'    float cx = 0.06 + fi*0.31 + 0.06*sin(uT*0.10 + fi*1.73);',
+'    float slope = 0.16 + 0.13*sin(fi*2.3 + 1.0);',
+'    float w = 0.030 + 0.028*fract(fi*0.417 + 0.13);',
+'    float d = abs(ax - cx - (1.0-vUv.y)*slope);',
+'    float b = smoothstep(w, 0.0, d);',
+'    b *= smoothstep(0.10, 0.75, vUv.y);',
+'    b *= 0.55 + 0.45*sin(uT*0.45 + fi*2.1);',
+'    rays += b;',
+'  }',
+'  col += rays * 0.05 * max(0.0, 1.0-uDepth*1.2) * vec3(0.45,0.85,0.95);',
+'  col += exp(-abs(vUv.y-1.0)*2.2)*(1.0-uDepth*0.9)*vec3(0.05,0.14,0.17);',
+'  float vg = length(vUv - vec2(0.5,0.55));',
+'  col *= 1.0 - 0.30*vg;',
+'  col += (hash(vUv*137.0 + fract(uT)*7.3)-0.5)*0.012;',
+'  gl_FragColor = vec4(col, 1.0);',
+'}'].join('\n');
+
+var PT_VS = [
+'attribute vec3 aPos;', // x, y (css px, y down), size (css px)
+'attribute float aAlpha;',
+'varying float vA;',
+'uniform vec2 uRes; uniform float uDPR;',
+'void main(){',
+'  vec2 clip = vec2(aPos.x/uRes.x*2.0-1.0, 1.0-aPos.y/uRes.y*2.0);',
+'  gl_Position = vec4(clip, 0., 1.);',
+'  gl_PointSize = aPos.z*uDPR;',
+'  vA = aAlpha;',
+'}'].join('\n');
+
+var PT_FS = [
+'precision mediump float;',
+'varying float vA;',
+'void main(){',
+'  vec2 p = gl_PointCoord - vec2(0.5);',
+'  float d = length(p);',
+'  float core = smoothstep(0.5, 0.10, d);',
+'  float rim = smoothstep(0.50, 0.40, d) - smoothstep(0.38, 0.20, d);',
+'  float a = (core*0.55 + rim*0.75) * vA;',
+'  gl_FragColor = vec4(vec3(0.72, 0.90, 1.0), a);',
+'}'].join('\n');
+
+function initGL(){
+  if(reduced || saveData){
+    canvas.style.background = 'linear-gradient(180deg,#0b3a55 0%,#062036 45%,#03101f 100%)';
+    return;
+  }
+  try{
+    gl = canvas.getContext('webgl', {antialias:!isPhone, alpha:false}) ||
+         canvas.getContext('experimental-webgl');
+    if(!gl) return;
+    quadProg = prog(QUAD_VS, QUAD_FS);
+    pointProg = prog(PT_VS, PT_FS);
+    if(!quadProg || !pointProg) return;
+
+    quadBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+
+    U.qT = gl.getUniformLocation(quadProg,'uT');
+    U.qD = gl.getUniformLocation(quadProg,'uDepth');
+    U.qR = gl.getUniformLocation(quadProg,'uRes');
+    U.pR = gl.getUniformLocation(pointProg,'uRes');
+    U.pD = gl.getUniformLocation(pointProg,'uDPR');
+    P.qPos = gl.getAttribLocation(quadProg,'aPos');
+    P.pPos = gl.getAttribLocation(pointProg,'aPos');
+    P.pA = gl.getAttribLocation(pointProg,'aAlpha');
+
+    var NB = isPhone ? 55 : 150, NM = isPhone ? 40 : 110, i;
+    bubPos = new Float32Array(NB*3); bubAlpha = new Float32Array(NB);
+    for(i=0;i<NB;i++){
+      bubbles.push({x:Math.random()*W, y:Math.random()*H, s:4+Math.random()*10,
+        sp:26+Math.random()*70, wA:6+Math.random()*18, wF:0.4+Math.random()*1.2, ph:Math.random()*6.28});
+      bubAlpha[i] = 0.30 + Math.random()*0.35;
+    }
+    motePos = new Float32Array(NM*3); moteAlpha = new Float32Array(NM);
+    for(i=0;i<NM;i++){
+      motes.push({x:Math.random()*W, y:Math.random()*H, s:1.6+Math.random()*2.2,
+        vx:(Math.random()-0.5)*16, vy:(Math.random()-0.5)*10});
+      moteAlpha[i] = 0.10 + Math.random()*0.16;
+    }
+    bubBuf = gl.createBuffer(); bubAlphaBuf = gl.createBuffer();
+    moteBuf = gl.createBuffer(); moteAlphaBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, bubAlphaBuf); gl.bufferData(gl.ARRAY_BUFFER, bubAlpha, gl.STATIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER, moteAlphaBuf); gl.bufferData(gl.ARRAY_BUFFER, moteAlpha, gl.STATIC_DRAW);
+    glOK = true;
+    sizeGL();
+  }catch(e){
+    console.error('webgl init failed', e);
+  }
+  if(!glOK) canvas.style.background = 'linear-gradient(180deg,#0b3a55 0%,#062036 45%,#03101f 100%)';
+}
+function sizeGL(){
+  if(!glOK) return;
+  canvas.width = Math.round(W*DPR); canvas.height = Math.round(H*DPR);
+  canvas.style.width = W+'px'; canvas.style.height = H+'px';
+  gl.viewport(0,0,canvas.width,canvas.height);
+}
+function drawPoints(arr, posArr, buf, alphaBuf, dt, depth, isBubble){
+  var i, n = arr.length;
+  for(i=0;i<n;i++){
+    var b = arr[i];
+    if(isBubble){
+      b.y -= b.sp*dt*(1+depth*0.7);
+      if(b.y < -30){ b.y = H+30; b.x = Math.random()*W; }
+      posArr[i*3] = b.x + Math.sin(perf*0.001*b.wF + b.ph)*b.wA;
+      posArr[i*3+1] = b.y;
+    } else {
+      b.x += b.vx*dt; b.y += b.vy*dt;
+      if(b.x > W+20) b.x = -20; if(b.x < -20) b.x = W+20;
+      if(b.y > H+20) b.y = -20; if(b.y < -20) b.y = H+20;
+      posArr[i*3] = b.x; posArr[i*3+1] = b.y;
+    }
+    posArr[i*3+2] = b.s;
+  }
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, posArr, gl.DYNAMIC_DRAW);
+  gl.enableVertexAttribArray(P.pPos);
+  gl.vertexAttribPointer(P.pPos, 3, gl.FLOAT, false, 0, 0);
+  gl.bindBuffer(gl.ARRAY_BUFFER, alphaBuf);
+  gl.enableVertexAttribArray(P.pA);
+  gl.vertexAttribPointer(P.pA, 1, gl.FLOAT, false, 0, 0);
+  gl.drawArrays(gl.POINTS, 0, n);
+}
+function renderGL(t, dt){
+  if(!glOK) return;
+  var dTarget = Math.pow(Math.min(1, scrollP*1.35), 0.85); // reach full dark by ~75% of the dive
+  depthGL += (dTarget - depthGL)*0.09;
+  gl.disable(gl.BLEND);
+  gl.useProgram(quadProg);
+  gl.uniform1f(U.qT, t); gl.uniform1f(U.qD, depthGL);
+  gl.uniform2f(U.qR, W, H);
+  gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+  gl.enableVertexAttribArray(P.qPos);
+  gl.vertexAttribPointer(P.qPos, 2, gl.FLOAT, false, 0, 0);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+  gl.useProgram(pointProg);
+  gl.uniform2f(U.pR, W, H); gl.uniform1f(U.pD, DPR);
+  drawPoints(bubbles, bubPos, bubBuf, bubAlphaBuf, dt, depthGL, true);
+  drawPoints(motes, motePos, moteBuf, moteAlphaBuf, dt, depthGL, false);
+}
+
+/* ============================================================
+   SCROLL ENGINE — smoothed scroll, swimmers, parallax, HUD
+   ============================================================ */
+var scrollP = 0, sy = 0, perf = 0;
+var tmx = 0, tmy = 0, mx = 0, my = 0;
+var nav = document.getElementById('nav');
+var hudM = document.getElementById('hudM'), hudDot = document.getElementById('hudDot'), hudZone = document.getElementById('hudZone');
+var heroUno = document.getElementById('hero-uno');
+var storyUno = document.getElementById('story-uno');
+var whale = document.getElementById('threat-whale');
+var worldBg = document.getElementById('worldBg');
+var sec = {};
+var zones = [['hero','SURFACE'],['story','THE STORY'],['cast','THE CREW'],['threat','RESTRICTED'],['world','FANTASEA'],['finale','THE DEEP']];
+var critFls = [];
+
+function measure(){
+  W = (window.visualViewport && visualViewport.width) || innerWidth;
+  H = (window.visualViewport && visualViewport.height) || innerHeight;
+  DPR = Math.min(devicePixelRatio || 1, isPhone ? 1.15 : 1.5);
+  ['hero','story','cast','threat','world','finale'].forEach(function(id){
+    var el = document.getElementById(id);
+    var r = el.getBoundingClientRect();
+    sec[id] = {top: r.top + window.scrollY, h: r.height};
+  });
+  sizeGL();
+}
+function secP(id){ // 0 when section top enters bottom of viewport, 1 when bottom leaves top
+  var s = sec[id];
+  return Math.max(0, Math.min(1, (sy + H - s.top) / (s.h + H)));
+}
+function onScroll(){
+  var max = document.documentElement.scrollHeight - H;
+  var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY/max)) : 0;
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+  hudM.textContent = Math.round(p*3847).toLocaleString('en-US') + ' m';
+  hudDot.style.top = (p*100) + '%';
+  var mid = window.scrollY + H*0.5, zn = zones[0][1];
+  for(var i=0;i<zones.length;i++){ if(sec[zones[i][0]] && sec[zones[i][0]].top <= mid) zn = zones[i][1]; }
+  hudZone.textContent = zn;
+}
+
+var lastT = 0;
+function frame(ts){
+  requestAnimationFrame(frame);
+  perf = ts;
+  var dt = Math.min((ts - lastT)/1000 || 0.016, 0.05); lastT = ts;
+  sy += (window.scrollY - sy)*0.09;
+  var max = document.documentElement.scrollHeight - H;
+  scrollP = max > 0 ? Math.max(0, Math.min(1, sy/max)) : 0;
+  mx += (tmx-mx)*0.05; my += (tmy-my)*0.05;
+  if(isPhone){ mx = 0; my = 0; }
+
+  if(!reduced){
+    // hero uno: drifts down-left as you dive, mouse parallax (desktop only)
+    var hp = Math.max(0, Math.min(1, sy / Math.max(1, sec.hero.h)));
+    heroUno.style.transform = 'translate3d(' + (-0.14*W*hp + mx*24) + 'px,' + (0.42*H*hp + my*16) + 'px,0) rotate(' + (-6*hp) + 'deg)';
+
+    // story uno: right -> left traverse with a sine dive
+    var p1 = secP('story');
+    var x1 = (1.05 + (-0.45 - 1.05)*p1) * W;
+    var y1 = Math.sin(p1*Math.PI*1.8)*90 + p1*130;
+    storyUno.style.transform = 'translate3d(' + x1 + 'px,' + y1 + 'px,0) rotate(' + (Math.sin(p1*6.28)*5 - 2*p1) + 'deg)';
+
+    // threat whale: slow menacing pass
+    var p2 = secP('threat');
+    var x2 = (1.08 + (-0.65 - 1.08)*p2) * W;
+    var y2 = Math.sin(p2*Math.PI*1.3)*46 + p2*70;
+    whale.style.transform = 'translate3d(' + x2 + 'px,' + y2 + 'px,0) rotate(' + (Math.sin(p2*4.2)*2.5) + 'deg)';
+
+    // temple parallax
+    var p3 = secP('world');
+    worldBg.style.transform = 'translate3d(0,' + (-9 + 15*p3) + '%,0) scale(' + (1.08 - 0.08*p3) + ')';
+
+    // reef critters gentle counter-drift
+    var p4 = secP('cast');
+    for(var i=0;i<critFls.length;i++){
+      critFls[i].style.transform = 'translate3d(0,' + ((i%2 ? -1 : 1) * 26 * (p4*2-1)) + 'px,0)';
+    }
+  }
+  renderGL(ts/1000, dt);
+}
+
+/* ============================================================
+   REVEALS
+   ============================================================ */
+function initReveals(){
+  var els = [].slice.call(document.querySelectorAll('.reveal'));
+  if(reduced || !('IntersectionObserver' in window)){
+    els.forEach(function(el){ el.classList.add('in'); });
+    return;
+  }
+  var counters = {};
+  els.forEach(function(el){
+    var s = el.closest('section') || document.body;
+    var k = s.id || 'x';
+    counters[k] = (counters[k] || 0);
+    el.dataset.rd = Math.min(counters[k]*90, 420);
+    counters[k]++;
+  });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        var el = en.target;
+        el.style.transitionDelay = el.dataset.rd + 'ms';
+        el.classList.add('in');
+        io.unobserve(el);
+        setTimeout(function(){ el.style.transitionDelay = '0ms'; }, 1400);
+      }
+    });
+  }, {threshold: 0.12, rootMargin: '0px 0px -6% 0px'});
+  els.forEach(function(el){ io.observe(el); });
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+critFls = [].slice.call(document.querySelectorAll('.critter .fl'));
+measure();
+onScroll();
+initReveals();
+if('requestIdleCallback' in window) requestIdleCallback(initGL, {timeout:700});
+else setTimeout(initGL, 1);
+addEventListener('scroll', onScroll, {passive:true});
+addEventListener('scroll', function(){
+  if(window.scrollX) window.scrollTo(0, window.scrollY);
+}, {passive:true});
+addEventListener('resize', function(){ measure(); onScroll(); });
+addEventListener('orientationchange', function(){
+  setTimeout(function(){ measure(); onScroll(); }, 80);
+});
+if(window.visualViewport){
+  visualViewport.addEventListener('resize', function(){ measure(); onScroll(); });
+}
+addEventListener('mousemove', function(e){
+  if(isPhone) return;
+  tmx = (e.clientX/W - 0.5)*2; tmy = (e.clientY/H - 0.5)*2;
+});
+addEventListener('load', measure);
+requestAnimationFrame(function(ts){ lastT = ts; requestAnimationFrame(frame); });
+})();
+
+</script>
+</body>
+</html>

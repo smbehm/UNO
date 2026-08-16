@@ -2,9 +2,17 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": false,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/omniscience", "destination": "/", "permanent": false },
+    { "source": "/omniscience/:path*", "destination": "/:path*", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/uno", "destination": "/uno/index.html" },
+    { "source": "/uno/", "destination": "/uno/index.html" }
+  ],
   "headers": [
     {
-      "source": "/omniscience/assets/(.*)",
+      "source": "/omni/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
