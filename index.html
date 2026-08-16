@@ -163,7 +163,7 @@
 
   /* ---------- swimmers ---------- */
   .swim{position:absolute; pointer-events:none; z-index:2; will-change:transform; filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
-  .swim img{width:100%; height:auto; display:block}
+  .swim img{width:100%; height:auto; display:block; object-fit:contain}
   .bob{animation:bob 5.2s ease-in-out infinite alternate}
   .bob2{animation:bob 6.8s ease-in-out .9s infinite alternate}
   @keyframes bob{from{transform:translateY(-13px) rotate(-2.4deg)} to{transform:translateY(13px) rotate(2.6deg)}}
@@ -206,7 +206,13 @@
   .critter{text-align:center; padding:10px 14px 26px; border-radius:20px; transition:background .35s}
   .critter:hover{background:rgba(53,208,255,.06)}
   .critter .fl{display:flex; align-items:flex-end; justify-content:center; height:230px; margin-bottom:14px}
-  .critter img{max-height:230px; max-width:92%; filter:drop-shadow(0 20px 28px rgba(0,0,0,.5))}
+  .critter img{
+    width:auto; height:auto;
+    max-height:230px; max-width:92%;
+    object-fit:contain; object-position:bottom center;
+    flex:0 0 auto;
+    filter:drop-shadow(0 20px 28px rgba(0,0,0,.5))
+  }
   .critter .role{font-size:10.5px; font-weight:700; letter-spacing:.32em; color:var(--aqua); text-transform:uppercase; margin-bottom:5px}
   .critter h3{font-family:'Cinzel',serif; font-size:21px; letter-spacing:.06em; margin-bottom:7px}
   .critter p{color:var(--ink-dim); font-size:15px; max-width:30ch; margin:0 auto}
@@ -286,11 +292,11 @@
 <main>
   <!-- ============ HERO ============ -->
   <section id="hero">
-    <div class="swim bob" id="hero-uno"><img src="/assets/uno-hero.webp" alt="Uno, the cyborg dolphin" width="900" height="869" decoding="async"></div>
+    <div class="swim bob" id="hero-uno"><img src="/assets/uno-hero.webp" alt="Uno, the cyborg dolphin" width="900" height="869" decoding="async" style="aspect-ratio:900/869"></div>
     <div class="wrap">
       <h1 class="logo reveal">
         <img src="/assets/logo.webp" width="1350" height="719"
-             alt="UNO: Guardians of the Deep — A Fantasea Adventure" fetchpriority="high" decoding="async">
+             alt="UNO: Guardians of the Deep — A Fantasea Adventure" fetchpriority="high" decoding="async" style="aspect-ratio:1350/719">
       </h1>
       <p class="logline reveal">A curious dolphin is given a second chance by a kind scientist and a brave young woman —
         and together they inspire a movement that <b>frees captive animals</b>, <b>heals the oceans</b>,
@@ -309,7 +315,7 @@
 
   <!-- ============ STORY ============ -->
   <section id="story">
-    <div class="swim" id="story-uno"><div class="bob2"><img src="/assets/uno-side.webp" alt="Uno swimming" width="1000" height="505" loading="lazy" decoding="async"></div></div>
+    <div class="swim" id="story-uno"><div class="bob2"><img src="/assets/uno-side.webp" alt="Uno swimming" width="1000" height="505" loading="lazy" decoding="async" style="aspect-ratio:1000/505"></div></div>
     <div class="wrap">
       <div class="kicker reveal">From the surface to the deep</div>
       <h2 class="reveal">The Story So Far</h2>
@@ -345,22 +351,22 @@
       <h2 class="reveal">Meet the Crew</h2>
       <div class="cards">
         <article class="card reveal">
-          <div class="ph"><img src="/assets/sarah.webp" alt="Sarah, the brave heart" width="719" height="820" loading="lazy" decoding="async"></div>
+          <div class="ph"><img src="/assets/sarah.webp" alt="Sarah, the brave heart" width="719" height="820" loading="lazy" decoding="async" style="aspect-ratio:719/820"></div>
           <div class="tx"><div class="role">The Brave Heart</div><h3>Sarah</h3>
           <p>A bio-engineering student who grew up pressing her hand against the aquarium glass. She never stopped listening.</p></div>
         </article>
         <article class="card reveal">
-          <div class="ph"><img src="/assets/elias.webp" alt="Elias, the kind scientist" width="577" height="820" loading="lazy" decoding="async"></div>
+          <div class="ph"><img src="/assets/elias.webp" alt="Elias, the kind scientist" width="577" height="820" loading="lazy" decoding="async" style="aspect-ratio:577/820"></div>
           <div class="tx"><div class="role">The Kind Scientist</div><h3>Elias</h3>
           <p>A genius who traded the surface for a secret lab beneath the waves — building machines that protect instead of take.</p></div>
         </article>
         <article class="card reveal">
-          <div class="ph"><img src="/assets/marty.webp" alt="Marty, the showman" width="613" height="820" loading="lazy" decoding="async"></div>
+          <div class="ph"><img src="/assets/marty.webp" alt="Marty, the showman" width="613" height="820" loading="lazy" decoding="async" style="aspect-ratio:613/820"></div>
           <div class="tx"><div class="role">The Showman</div><h3>Marty</h3>
           <p>King of the Aquapark empire. Every smile is box office — and every promise comes with fine print.</p></div>
         </article>
         <article class="card reveal">
-          <div class="ph"><img src="/assets/ivanka.webp" alt="Ivanka, Aquapark royalty" width="1000" height="558" style="object-position:center 20%" loading="lazy" decoding="async"></div>
+          <div class="ph"><img src="/assets/ivanka.webp" alt="Ivanka, Aquapark royalty" width="1000" height="558" style="object-position:center 20%;aspect-ratio:1000/558" loading="lazy" decoding="async"></div>
           <div class="tx"><div class="role">The Trophy Wife</div><h3>Ivanka</h3>
           <p>Aquapark royalty. The diamonds are real. The smile is negotiable.</p></div>
         </article>
@@ -372,32 +378,32 @@
       </div>
       <div class="reef">
         <div class="critter reveal">
-          <div class="fl"><img src="/assets/turtle.webp" alt="The Ancient Turtle" class="bob" width="635" height="520" loading="lazy" decoding="async"></div>
+          <div class="fl"><img src="/assets/turtle.webp" alt="The Ancient Turtle" class="bob" width="635" height="520" loading="lazy" decoding="async" style="aspect-ratio:635/520"></div>
           <div class="role">Elder of the Deep</div><h3>The Ancient One</h3>
           <p class="quote">If you want to go fast, you go alone. If you want to go far, you go together.</p>
         </div>
         <div class="critter reveal">
-          <div class="fl"><img src="/assets/puffy.webp" alt="Puffy the pufferfish" class="bob2" width="578" height="504" loading="lazy" decoding="async"></div>
+          <div class="fl"><img src="/assets/puffy.webp" alt="Puffy the pufferfish" class="bob2" width="578" height="504" loading="lazy" decoding="async" style="aspect-ratio:578/504"></div>
           <div class="role">Do not swallow</div><h3>Puffy</h3>
           <p>The reef's most volatile resident. Side effects may include extremely strange dreams.</p>
         </div>
         <div class="critter reveal">
-          <div class="fl"><img src="/assets/mantas.webp" alt="Mantas the mantis shrimp" class="bob" width="800" height="742" loading="lazy" decoding="async"></div>
+          <div class="fl"><img src="/assets/mantas.webp" alt="Mantas the mantis shrimp" class="bob" width="800" height="742" loading="lazy" decoding="async" style="aspect-ratio:800/742"></div>
           <div class="role">Claws first, questions last</div><h3>Mantas</h3>
           <p>The grumpiest crustacean in the Sea. Packs a punch with the power of the sun.</p>
         </div>
         <div class="critter reveal">
-          <div class="fl"><img src="/assets/krabby.webp" alt="Krabby the crab" class="bob2" width="774" height="520" loading="lazy" decoding="async"></div>
+          <div class="fl"><img src="/assets/krabby.webp" alt="Krabby the crab" class="bob2" width="774" height="520" loading="lazy" decoding="async" style="aspect-ratio:774/520"></div>
           <div class="role">Heart of the reef</div><h3>Krabby</h3>
           <p class="quote">You got to put that love in action, if you want that satisfaction..</p>
         </div>
         <div class="critter reveal">
-          <div class="fl"><img src="/assets/octopus.webp" alt="Octopus" class="bob" width="800" height="725" loading="lazy" decoding="async"></div>
+          <div class="fl"><img src="/assets/octopus.webp" alt="Octopus" class="bob" width="800" height="725" loading="lazy" decoding="async" style="aspect-ratio:800/725"></div>
           <div class="role">Professional worrier</div><h3>Octopus</h3>
           <p>Eight arms, zero chill. If the current shifts, he panics first and inks second.</p>
         </div>
         <div class="critter reveal">
-          <div class="fl"><img src="/assets/roe-jogan.webp" alt="Roe Jogan" class="bob2" width="598" height="800" loading="lazy" decoding="async"></div>
+          <div class="fl"><img src="/assets/roe-jogan.webp" alt="Roe Jogan" class="bob2" width="598" height="800" loading="lazy" decoding="async" style="aspect-ratio:598/800"></div>
           <div class="role">Long-form legend</div><h3>Roe Jogan</h3>
           <p>Three hours, one shell, and a lot of opinions. The reef is not ready for this conversation.</p>
         </div>
@@ -407,7 +413,7 @@
 
   <!-- ============ THREAT ============ -->
   <section id="threat">
-    <div class="swim" id="threat-whale"><div class="bob2"><img src="/assets/whale.webp" alt="A machine whale in the deep" width="1000" height="390" loading="lazy" decoding="async"></div></div>
+    <div class="swim" id="threat-whale"><div class="bob2"><img src="/assets/whale.webp" alt="A machine whale in the deep" width="1000" height="390" loading="lazy" decoding="async" style="aspect-ratio:1000/390"></div></div>
     <div class="wrap">
       <div class="kicker red reveal">Classified // deep water</div>
       <h2 class="reveal">Not Every Machine<br>Was Built to Protect</h2>
