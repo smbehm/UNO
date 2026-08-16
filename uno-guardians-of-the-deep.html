@@ -99,7 +99,7 @@
   .trailer .tag{position:absolute; left:22px; bottom:18px; font-size:12px; font-weight:700; letter-spacing:.4em; color:var(--ink);
     text-transform:uppercase; text-shadow:0 2px 10px rgba(0,0,0,.8)}
   .trailer iframe, #ytplayer{position:absolute; inset:0; width:100%; height:100%; border:0}
-  .trailer-overlay{position:absolute; inset:0; z-index:5}
+  .trailer-overlay{position:absolute; inset:0; z-index:5; touch-action:manipulation; -webkit-tap-highlight-color:transparent}
   .trailer.is-playing .trailer-overlay{opacity:0; pointer-events:none; transition:opacity .2s}
   .ytpill{position:absolute; right:14px; bottom:12px; z-index:6; font-size:11px; font-weight:700;
     letter-spacing:.2em; text-transform:uppercase; text-decoration:none; color:var(--ink);
@@ -719,13 +719,18 @@ function initReveals(){
 }
 
 /* ============================================================
-   TRAILER — one-click play with sound at 4K
+   TRAILER — one tap plays with sound (iPhone-safe) at 4K
    ============================================================ */
 var VIDEO_ID = '7RcKBipTxSE';
 var WATCH_URL = 'https://www.youtube.com/watch?v=' + VIDEO_ID;
 var ytReachable = null;
 var ytPlayer = null;
 var ytWantPlay = false;
+
+function isAppleTouch(){
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
 
 (function probeYouTube(){
   var im = new Image();
@@ -734,6 +739,11 @@ var ytWantPlay = false;
   im.referrerPolicy = 'no-referrer';
   im.src = 'https://i.ytimg.com/vi/' + VIDEO_ID + '/default.jpg';
 })();
+
+function embedSrc(){
+  return 'https://www.youtube.com/embed/' + VIDEO_ID +
+    '?autoplay=1&mute=0&playsinline=1&rel=0&modestbranding=1&fs=1&vq=hd2160&enablejsapi=1';
+}
 
 function requestFourK(p){
   if(!p) return;
@@ -751,8 +761,24 @@ function startTrailerPlayback(p){
   requestFourK(p);
 }
 
+function injectAutoplayFrame(trailer){
+  var f = document.createElement('iframe');
+  f.id = 'ytplayer';
+  f.src = embedSrc();
+  f.title = 'UNO: Guardians of the Deep — Official Trailer';
+  f.setAttribute('allowfullscreen', '');
+  f.setAttribute('playsinline', '1');
+  f.setAttribute('webkit-playsinline', '1');
+  f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+  f.allow = 'autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen';
+  var mount = document.getElementById('ytplayer');
+  if(mount) mount.parentNode.replaceChild(f, mount);
+  else trailer.insertBefore(f, trailer.firstChild);
+  trailer.classList.add('is-playing');
+}
+
 function onYouTubeIframeAPIReady(){
-  if(location.protocol === 'file:') return;
+  if(location.protocol === 'file:' || isAppleTouch()) return;
   var mount = document.getElementById('ytplayer');
   if(!mount || ytPlayer) return;
   ytPlayer = new YT.Player('ytplayer', {
@@ -792,8 +818,10 @@ function initTrailer(){
   var played = false;
   if(!trailer || !overlay) return;
 
-  window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
-  if(window.__ytApiReady || (window.YT && window.YT.Player)) onYouTubeIframeAPIReady();
+  if(!isAppleTouch()){
+    window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+    if(window.__ytApiReady || (window.YT && window.YT.Player)) onYouTubeIframeAPIReady();
+  }
 
   function openTab(){ window.open(WATCH_URL, '_blank', 'noopener,noreferrer'); }
 
@@ -806,18 +834,22 @@ function initTrailer(){
     trailer.style.cursor = 'default';
     overlay.removeAttribute('role');
     overlay.removeAttribute('tabindex');
-    if(ytPlayer && typeof ytPlayer.playVideo === 'function'){
-      startTrailerPlayback(ytPlayer);
-      trailer.classList.add('is-playing');
-    } else if(window.YT && YT.Player && !ytPlayer){
-      onYouTubeIframeAPIReady();
+
+    // iPhone/iPad: playVideo() on a preloaded player is blocked. Create the
+    // embed during this tap so autoplay-with-sound is allowed.
+    if(isAppleTouch() || !ytPlayer || typeof ytPlayer.playVideo !== 'function'){
+      injectAutoplayFrame(trailer);
+      return;
     }
+    startTrailerPlayback(ytPlayer);
+    trailer.classList.add('is-playing');
   }
 
   overlay.addEventListener('click', play);
-  overlay.addEventListener('keydown', function(e){
-    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); play(e); }
-  });
+  overlay.addEventListener('touchend', function(e){
+    e.preventDefault();
+    play(e);
+  }, {passive:false});
 }
 
 /* ============================================================
