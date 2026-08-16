@@ -17,6 +17,7 @@ Thumbs.db
 # Build artifacts
 *.png
 !assets/*.png
+!omniscience/assets/*.png
 shots/
 montage.png
 
