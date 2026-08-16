@@ -9,6 +9,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://i.ytimg.com">
 <link rel="preconnect" href="https://www.youtube.com">
+<script>
+  window.__ytApiReady = false;
+  window.onYouTubeIframeAPIReady = function(){ window.__ytApiReady = true; };
+</script>
+<script src="https://www.youtube.com/iframe_api" async></script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -93,7 +98,9 @@
   @keyframes ping{0%{transform:scale(1); opacity:.9} 80%,100%{transform:scale(1.75); opacity:0}}
   .trailer .tag{position:absolute; left:22px; bottom:18px; font-size:12px; font-weight:700; letter-spacing:.4em; color:var(--ink);
     text-transform:uppercase; text-shadow:0 2px 10px rgba(0,0,0,.8)}
-  .trailer iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
+  .trailer iframe, #ytplayer{position:absolute; inset:0; width:100%; height:100%; border:0}
+  .trailer-overlay{position:absolute; inset:0; z-index:5}
+  .trailer.is-playing .trailer-overlay{opacity:0; pointer-events:none; transition:opacity .2s}
   .ytpill{position:absolute; right:14px; bottom:12px; z-index:6; font-size:11px; font-weight:700;
     letter-spacing:.2em; text-transform:uppercase; text-decoration:none; color:var(--ink);
     background:rgba(4,18,34,.72); border:1px solid rgba(127,216,232,.4); border-radius:999px;
@@ -247,11 +254,14 @@
       <p class="logline reveal">A curious dolphin is given a second chance by a kind scientist and a brave young woman —
         and together they inspire a movement that <b>frees captive animals</b>, <b>heals the oceans</b>,
         and <b>teaches technology how to care</b>.</p>
-      <div class="trailer reveal" id="trailer" role="button" tabindex="0" aria-label="Play the official trailer">
-        <div class="thumb" role="img" aria-label="UNO: Guardians of the Deep — official trailer"></div>
-        <div class="shade"></div>
-        <div class="playbtn" aria-hidden="true"></div>
-        <div class="tag">▸ Official Trailer</div>
+      <div class="trailer reveal" id="trailer">
+        <div id="ytplayer"></div>
+        <div class="trailer-overlay" id="trailer-overlay" role="button" tabindex="0" aria-label="Play the official trailer">
+          <div class="thumb" role="img" aria-label="UNO: Guardians of the Deep — official trailer"></div>
+          <div class="shade"></div>
+          <div class="playbtn" aria-hidden="true"></div>
+          <div class="tag">▸ Official Trailer</div>
+        </div>
       </div>
       <div class="scrollcue reveal">Dive Deeper<span class="chev"></span></div>
     </div>
@@ -709,15 +719,14 @@ function initReveals(){
 }
 
 /* ============================================================
-   TRAILER (lite embed)
+   TRAILER — one-click play with sound at 4K
    ============================================================ */
 var VIDEO_ID = '7RcKBipTxSE';
 var WATCH_URL = 'https://www.youtube.com/watch?v=' + VIDEO_ID;
-
-// Can this browser actually reach YouTube? An iframe's `load` event fires even for
-// error pages, so it can't answer this — a real asset fetch can. Result decides
-// whether clicking play embeds a player or just opens YouTube in a new tab.
 var ytReachable = null;
+var ytPlayer = null;
+var ytWantPlay = false;
+
 (function probeYouTube(){
   var im = new Image();
   im.onload = function(){ ytReachable = true; };
@@ -726,62 +735,89 @@ var ytReachable = null;
   im.src = 'https://i.ytimg.com/vi/' + VIDEO_ID + '/default.jpg';
 })();
 
+function requestFourK(p){
+  if(!p) return;
+  try{
+    if(p.setPlaybackQualityRange) p.setPlaybackQualityRange('hd2160', 'highres');
+    p.setPlaybackQuality('highres');
+  }catch(err){}
+}
+
+function startTrailerPlayback(p){
+  if(!p || typeof p.playVideo !== 'function') return;
+  try{ p.unMute(); }catch(err){}
+  try{ p.setVolume(100); }catch(err){}
+  p.playVideo();
+  requestFourK(p);
+}
+
+function onYouTubeIframeAPIReady(){
+  if(location.protocol === 'file:') return;
+  var mount = document.getElementById('ytplayer');
+  if(!mount || ytPlayer) return;
+  ytPlayer = new YT.Player('ytplayer', {
+    videoId: VIDEO_ID,
+    width: '100%',
+    height: '100%',
+    host: 'https://www.youtube.com',
+    playerVars: {
+      autoplay: 0,
+      mute: 0,
+      rel: 0,
+      modestbranding: 1,
+      playsinline: 1,
+      fs: 1,
+      vq: 'hd2160',
+      origin: location.origin
+    },
+    events: {
+      onReady: function(e){
+        requestFourK(e.target);
+        if(ytWantPlay) startTrailerPlayback(e.target);
+      },
+      onStateChange: function(e){
+        if(e.data === YT.PlayerState.PLAYING){
+          requestFourK(e.target);
+          var box = document.getElementById('trailer');
+          if(box) box.classList.add('is-playing');
+        }
+      }
+    }
+  });
+}
+
 function initTrailer(){
-  var trailer = document.getElementById('trailer'), played = false;
+  var trailer = document.getElementById('trailer');
+  var overlay = document.getElementById('trailer-overlay');
+  var played = false;
+  if(!trailer || !overlay) return;
+
+  window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+  if(window.__ytApiReady || (window.YT && window.YT.Player)) onYouTubeIframeAPIReady();
 
   function openTab(){ window.open(WATCH_URL, '_blank', 'noopener,noreferrer'); }
 
-  // Persistent escape hatch, pinned over the player in every state.
-  function pill(){
-    var a = document.createElement('a');
-    a.className = 'ytpill'; a.href = WATCH_URL; a.target = '_blank'; a.rel = 'noopener noreferrer';
-    a.textContent = 'YouTube ↗';
-    a.addEventListener('click', function(e){ e.stopPropagation(); });
-    return a;
-  }
-
-  // Shown if the embed never loads (CSP, sandboxed frame, blocked network).
-  function blocked(){
-    var d = document.createElement('div');
-    d.className = 'ytblocked';
-    d.innerHTML = '<p>The embedded player can’t run in this window.</p>' +
-      '<a href="' + WATCH_URL + '" target="_blank" rel="noopener noreferrer">▶ Watch on YouTube</a>';
-    return d;
-  }
-
-  function play(){
+  function play(e){
+    if(e) e.preventDefault();
     if(played) return;
-    // A page opened from disk has a "null" origin, which YouTube refuses to serve the
-    // embed to; likewise if YouTube is unreachable. Either way, send the viewer
-    // straight to YouTube rather than dropping them on a dead player.
     if(location.protocol === 'file:' || ytReachable === false){ openTab(); return; }
     played = true;
-
-    var f = document.createElement('iframe');
-    f.src = 'https://www.youtube.com/embed/' + VIDEO_ID +
-            '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
-    f.title = 'UNO: Guardians of the Deep — Official Trailer';
-    f.setAttribute('frameborder', '0');
-    f.setAttribute('allowfullscreen', '');
-    f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-    f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen';
-
-    trailer.innerHTML = '';
-    trailer.appendChild(f);
-    trailer.appendChild(pill());
+    ytWantPlay = true;
     trailer.style.cursor = 'default';
-    trailer.removeAttribute('role');
-    trailer.removeAttribute('tabindex');
-
-    // Probe may still have been pending at click time; if it comes back negative,
-    // surface a real way out instead of leaving a dead frame on screen.
-    setTimeout(function(){
-      if(ytReachable === false && !trailer.querySelector('.ytblocked')) trailer.appendChild(blocked());
-    }, 5000);
+    overlay.removeAttribute('role');
+    overlay.removeAttribute('tabindex');
+    if(ytPlayer && typeof ytPlayer.playVideo === 'function'){
+      startTrailerPlayback(ytPlayer);
+      trailer.classList.add('is-playing');
+    } else if(window.YT && YT.Player && !ytPlayer){
+      onYouTubeIframeAPIReady();
+    }
   }
 
-  trailer.addEventListener('click', play);
-  trailer.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); play(); } });
+  overlay.addEventListener('click', play);
+  overlay.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); play(e); }
+  });
 }
 
 /* ============================================================
