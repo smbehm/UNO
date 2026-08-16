@@ -16,6 +16,7 @@ Thumbs.db
 
 # Build artifacts
 *.png
+!assets/*.png
 shots/
 montage.png
 
