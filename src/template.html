@@ -227,9 +227,6 @@
   .critter p{color:var(--ink-dim); font-size:15px; max-width:30ch; margin:0 auto}
   .critter p.quote{font-style:italic; color:var(--aqua-soft)}
   .critter p.quote::before{content:'\201C'} .critter p.quote::after{content:'\201D'}
-  .critter.pair{grid-column:1/-1}
-  .critter.pair .fl{height:280px}
-  .critter.pair img{max-height:280px; max-width:min(720px,92%)}
   .reefwide{grid-column:1/-1; display:flex; gap:26px; align-items:center; background:var(--panel); border:1px solid var(--line);
     border-radius:20px; overflow:hidden; backdrop-filter:blur(9px)}
   .reefwide img{width:min(340px,42%); align-self:stretch; object-fit:cover}
@@ -435,11 +432,6 @@
           <div class="fl"><img src="{{A:blue-whale}}" alt="Blue Whale" class="bob2" width="1000" height="659" loading="lazy" decoding="async" style="aspect-ratio:1000/659"></div>
           <div class="role">Low frequency, high volume</div><h3>Blue Whale</h3>
           <p>Moves like a cathedral. Smiles like he already knows the punchline.</p>
-        </div>
-        <div class="critter pair reveal">
-          <div class="fl"><img src="{{A:baby-turtle-jelly}}" alt="Baby Turtle and Baby Jelly" class="bob" width="1000" height="591" loading="lazy" decoding="async" style="aspect-ratio:1000/591"></div>
-          <div class="role">New to the current</div><h3>Baby Turtle &amp; Baby Jelly</h3>
-          <p>First day on the reef. One has a shell. One has sparkles. Both have opinions.</p>
         </div>
       </div>
     </div>
