@@ -53,6 +53,16 @@
       "genre": ["Animation", "Adventure", "Family"],
       "inLanguage": "en",
       "productionCompany": { "@type": "Organization", "name": "Fantasea" },
+      "author": [
+        { "@type": "Person", "name": "Arash Romaeo Jahroudi" },
+        { "@type": "Person", "name": "Sonia Lowe" },
+        { "@type": "Person", "name": "Jeronimas Vysniauskas" }
+      ],
+      "producer": [
+        { "@type": "Person", "name": "Arash Romaeo Jahroudi" },
+        { "@type": "Person", "name": "Jeronimas Vysniauskas" },
+        { "@type": "Person", "name": "Sean Behm" }
+      ],
       "trailer": {
         "@type": "VideoObject",
         "name": "UNO: Guardians of the Deep — Official Trailer",
@@ -169,7 +179,9 @@
   #hero-uno{width:clamp(200px,25vw,370px); right:1%; top:11vh; z-index:1; opacity:.96}
   @media(max-width:1100px){#hero-uno{width:210px; top:8vh; right:-8%}}
   @media(max-width:760px){#hero-uno{width:150px; top:5vh; right:-10%}}
-  #story-uno{width:clamp(260px,34vw,480px); top:22%; left:0; transform:translate3d(100%,0,0)}
+  /* the treatment made #story ~4x taller, so 22% dropped Uno into the middle
+     of the act prose. 6% keeps him in the intro band above the dive spine. */
+  #story-uno{width:clamp(260px,34vw,480px); top:6%; left:0; transform:translate3d(100%,0,0)}
   #cast-turtle{display:none}
   #threat-whale{width:clamp(300px,40vw,560px); top:12%; left:0; transform:translate3d(100%,0,0); filter:drop-shadow(0 0 44px rgba(80,255,150,.14)) drop-shadow(0 18px 30px rgba(0,0,0,.6))}
   #finale-angler{width:clamp(210px,28vw,380px); bottom:3vh; left:0; z-index:4;
@@ -183,17 +195,88 @@
     100% {transform:translate3d(-45%,0,0) scaleX(1)}
   }
 
-  /* ---------- story ---------- */
+  /* ---------- story / treatment ---------- */
   #story{padding-top:20vh}
-  .beats{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:26px; margin-top:54px}
-  .beat{background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:34px 30px; backdrop-filter:blur(9px);
-    transition:transform .35s, border-color .35s}
-  .beat:hover{transform:translateY(-7px); border-color:rgba(53,208,255,.5)}
-  .beat .no{font-family:'Cinzel',serif; font-weight:900; font-size:15px; color:var(--aqua); letter-spacing:.3em; margin-bottom:14px}
-  .beat h3{font-family:'Cinzel',serif; font-size:22px; font-weight:700; letter-spacing:.05em; margin-bottom:12px; color:#f2fbff}
-  .beat p{color:var(--ink-dim); font-size:16.5px}
+
+  /* small caps label used above prose blocks in the treatment + vision */
+  .tlabel{font-size:11.5px; font-weight:700; letter-spacing:.44em; text-transform:uppercase;
+    color:var(--aqua); margin-bottom:15px}
+  .tlabel.gold{color:var(--gold)}
+  .prose{color:var(--ink-dim); font-size:16.5px; max-width:74ch}
+  .prose p + p{margin-top:14px}
+
+  /* the logline, set as a plaque rather than body copy */
+  .plaque{margin-top:48px; padding:30px clamp(24px,3vw,38px); background:var(--panel);
+    border:1px solid var(--line); border-left:3px solid var(--gold);
+    border-radius:0 18px 18px 0; backdrop-filter:blur(9px)}
+  .plaque p{font-family:'Cinzel',serif; font-weight:700; color:#f2fbff; letter-spacing:.02em;
+    font-size:clamp(17px,2vw,23px); line-height:1.5}
+  .synopsis{margin-top:52px}
+
+  /* ---- the dive: a spine that fills as you descend through the acts ---- */
+  .dive{--gutter:clamp(44px,6vw,88px); --spine:clamp(14px,2vw,30px);
+    position:relative; margin-top:64px; padding-left:var(--gutter)}
+  .spine{position:absolute; left:var(--spine); top:6px; bottom:6px; width:2px;
+    background:rgba(127,216,232,.15); border-radius:2px; overflow:hidden}
+  .spine i{position:absolute; left:0; top:0; width:100%; height:0;
+    background:linear-gradient(180deg,var(--aqua) 0%,var(--aqua-soft) 48%,var(--gold) 100%);
+    box-shadow:0 0 16px rgba(53,208,255,.6)}
+  .act{position:relative; padding:52px 0 4px}
+  .act:first-of-type{padding-top:6px}
+  .actmark{position:absolute; left:calc(var(--spine) - var(--gutter) - 17px); top:50px;
+    width:36px; height:36px; border-radius:50%; display:grid; place-items:center;
+    font-family:'Cinzel',serif; font-weight:900; font-size:14px; letter-spacing:.06em;
+    color:var(--gold-hi); background:#061829; border:1px solid rgba(231,189,92,.55);
+    box-shadow:0 0 26px rgba(231,189,92,.28)}
+  .act:first-of-type .actmark{top:4px}
+  .actlbl{font-size:11.5px; font-weight:700; letter-spacing:.5em; text-transform:uppercase;
+    color:var(--aqua); margin-bottom:9px}
+  .act h3{font-family:'Cinzel',serif; font-weight:900; letter-spacing:.05em; color:#f2fbff;
+    font-size:clamp(23px,3vw,34px); line-height:1.15; margin-bottom:4px}
+  .moment{position:relative; padding:26px 0 2px}
+  .moment .node{position:absolute; left:calc(var(--spine) - var(--gutter) - 4px); top:34px;
+    width:10px; height:10px; border-radius:50%; background:var(--aqua-soft);
+    box-shadow:0 0 12px rgba(53,208,255,.75)}
+  .moment h4{font-family:'Cinzel',serif; font-size:16px; font-weight:700; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--gold); margin-bottom:10px}
+  .moment p{color:var(--ink-dim); font-size:16.5px; max-width:70ch}
+  .moment p + p{margin-top:12px}
+  .moment .said{color:var(--aqua-soft); font-style:italic}
+  @media(max-width:640px){
+    .dive{--gutter:38px; --spine:11px}
+    .actmark{width:28px; height:28px; font-size:12px; left:calc(var(--spine) - var(--gutter) - 13px)}
+  }
+
   .story-outro{margin-top:60px; text-align:center; font-family:'Cinzel',serif; font-size:clamp(18px,2.4vw,28px); font-weight:700;
     letter-spacing:.08em; color:var(--aqua-soft)}
+
+  /* ---------- vision: personal statement, themes, credits ---------- */
+  #vision{padding-top:18vh; padding-bottom:18vh}
+  .manifesto{font-family:'Cinzel',serif; font-weight:700; color:#f2fbff; letter-spacing:.03em;
+    font-size:clamp(20px,2.9vw,34px); line-height:1.35; max-width:22ch; margin-bottom:16px}
+  .manifesto em{font-style:normal; color:var(--aqua)}
+  .vgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:26px; margin-top:56px}
+  .vcard{background:var(--panel); border:1px solid var(--line); border-radius:20px;
+    padding:32px clamp(24px,2.6vw,34px); backdrop-filter:blur(9px);
+    transition:transform .35s, border-color .35s}
+  .vcard:hover{transform:translateY(-6px); border-color:rgba(53,208,255,.45)}
+  .vcard .prose{font-size:16px}
+  .tone{margin-top:20px; padding-top:18px; border-top:1px solid var(--line)}
+  .tone b{color:var(--gold); font-weight:700; letter-spacing:.1em; text-transform:uppercase; font-size:12px}
+
+  /* credits + submission badge */
+  .badge{display:inline-flex; align-items:center; gap:12px; padding:9px 20px; border-radius:999px;
+    border:1px solid rgba(231,189,92,.42); background:rgba(231,189,92,.07); color:var(--gold);
+    font-size:11.5px; font-weight:700; letter-spacing:.3em; text-transform:uppercase}
+  .badge .dotx{width:6px; height:6px; border-radius:50%; background:var(--gold);
+    box-shadow:0 0 10px var(--gold)}
+  .credits{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:30px;
+    margin-top:64px; padding-top:38px; border-top:1px solid var(--line)}
+  .credits .cgroup h5{font-size:11px; font-weight:700; letter-spacing:.4em; text-transform:uppercase;
+    color:var(--aqua); margin-bottom:12px}
+  .credits .cgroup p{font-family:'Cinzel',serif; font-size:16px; color:var(--ink); line-height:1.85; letter-spacing:.03em}
+  .credits a{color:var(--gold); text-decoration:none; border-bottom:1px solid rgba(231,189,92,.35)}
+  .credits a:hover{color:var(--gold-hi)}
 
   /* ---------- cast ---------- */
   .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:24px; margin-top:54px}
@@ -227,9 +310,11 @@
   .critter p{color:var(--ink-dim); font-size:15px; max-width:30ch; margin:0 auto}
   .critter p.quote{font-style:italic; color:var(--aqua-soft)}
   .critter p.quote::before{content:'\201C'} .critter p.quote::after{content:'\201D'}
-  .critter.pair{grid-column:1/-1}
-  .critter.pair .fl{height:280px}
-  .critter.pair img{max-height:280px; max-width:min(720px,92%)}
+  /* two-character art. these used to span the full row (grid-column:1/-1),
+     which dropped them out of the tiled grid into stacked banners. they are
+     ordinary auto-fit cells now -- the only concession is relaxing the 92%
+     width cap, since the art is wider than a single-subject cutout. */
+  .critter.pair img{max-width:100%}
   .reefwide{grid-column:1/-1; display:flex; gap:26px; align-items:center; background:var(--panel); border:1px solid var(--line);
     border-radius:20px; overflow:hidden; backdrop-filter:blur(9px)}
   .reefwide img{width:min(340px,42%); align-self:stretch; object-fit:cover}
@@ -271,6 +356,7 @@
   @media (prefers-reduced-motion: reduce){
     .bob,.bob2,.cruise,.scrollcue .chev,h1.logo img{animation:none}
     #finale-angler{left:auto; right:4%; bottom:6vh; transform:none}
+    .spine i{height:100%}
     html{scroll-behavior:auto}
     .reveal{opacity:1; transform:none; transition:none}
   }
@@ -287,6 +373,7 @@
     <a href="#story">Story</a>
     <a href="#cast">The Crew</a>
     <a href="#world">Fantasea</a>
+    <a href="#vision">Vision</a>
     <a class="yt" href="https://youtu.be/7RcKBipTxSE" target="_blank" rel="noopener noreferrer">▶ YouTube</a>
   </div>
 </nav>
@@ -307,6 +394,9 @@
         <img src="{{A:logo}}" width="1350" height="719"
              alt="UNO: Guardians of the Deep — A Fantasea Adventure" fetchpriority="high" decoding="async" style="aspect-ratio:1350/719">
       </h1>
+      <p class="reveal" style="margin:24px 0 0">
+        <span class="badge"><span class="dotx"></span>Submitted for the Future Vision XPRIZE 2026</span>
+      </p>
       <p class="logline reveal">A curious dolphin is given a second chance by a kind scientist and a brave young woman —
         and together they inspire a movement that <b>frees captive animals</b>, <b>heals the oceans</b>,
         and <b>teaches technology how to care</b>.</p>
@@ -326,29 +416,175 @@
   <section id="story">
     <div class="swim" id="story-uno"><div class="bob2"><img src="{{A:uno-side}}" alt="Uno swimming" width="1000" height="505" loading="lazy" decoding="async" style="aspect-ratio:1000/505"></div></div>
     <div class="wrap">
-      <div class="kicker reveal">From the surface to the deep</div>
+      <div class="kicker reveal">A feature film treatment</div>
       <h2 class="reveal">The Story So Far</h2>
       <p class="lead reveal">Some machines are built to take from the ocean. One was built to give something back.</p>
-      <div class="beats">
-        <article class="beat reveal">
-          <div class="no">ACT 1</div>
-          <h3>Two Brothers. One Choice.</h3>
-          <p>Twenty years ago, off the Australian coast, two brothers pulled a young dolphin from their nets — and chose
-            very different futures. One built an empire above the waves. The other disappeared beneath them.</p>
+
+      <div class="plaque reveal">
+        <div class="tlabel gold">Logline</div>
+        <p>A curious dolphin is given a second chance by a kind scientist and a brave young woman.
+          Together they inspire a movement that frees captive animals, heals the oceans, and teaches
+          technology how to care.</p>
+      </div>
+
+      <div class="synopsis reveal">
+        <div class="tlabel">Synopsis</div>
+        <div class="prose">
+          <p>Twenty years ago, two fisherman brothers, Marty and Elias, parted ways after Marty tried to
+            sell a captured dolphin to poachers. Elias left the sea in guilt, studied robotics, and built a
+            secret underwater lab dedicated to protecting the oceans. Marty built an Aquapark empire,
+            publicly posing as an ocean guardian while secretly continuing to exploit marine life and
+            corrupt officials.</p>
+          <p>In the present, Elias rescues a critically injured dolphin and creates the first hybrid
+            prototype: 001, half biological, half machine. Marty discovers the technology, charms his
+            brother into handing it over “for ocean cleanup,” and turns 001 into the commander of a robotic
+            fleet. Secretly, Marty develops militarized killer narwhals and mosquito drones to sell to
+            rogue forces.</p>
+          <p>When 001 — later named Uno by Sarah, Marty’s idealistic daughter — begins to feel and choose
+            for himself, she uncovers her father’s true plans. Together with Elias, she upgrades Uno with a
+            biological heart and an EMP capability. The former machine becomes the first true Guardian of
+            the Deep, proving that technology guided by empathy, not profit, can heal the oceans and
+            protect the future.</p>
+        </div>
+      </div>
+
+      <div class="dive">
+        <div class="spine" aria-hidden="true"><i id="spineFill"></i></div>
+
+        <!-- ---- ACT ONE ---- -->
+        <article class="act">
+          <div class="actmark reveal" aria-hidden="true">I</div>
+          <div class="reveal">
+            <div class="actlbl">Act One</div>
+            <h3>Two Brothers, One Choice</h3>
+          </div>
+
+          <div class="moment reveal">
+            <span class="node" aria-hidden="true"></span>
+            <h4>The Brothers</h4>
+            <p>Twenty years ago, on a small fishing boat off the Australian coast, two brothers pull a
+              young dolphin from their nets. Marty, the older and more ambitious of the two, sees only
+              profit. He wants to sell the animal to poachers. Elias, younger and idealistic, is horrified.
+              <span class="said">“We’re not selling a living creature,”</span> he says. The argument ends
+              their partnership. Elias walks away from the family business that day and never returns.</p>
+            <p>Marty continues. He sells exotic fish, cultivates relationships with corrupt officials, and
+              eventually opens his first Aquapark. Publicly he is a showman and entrepreneur. Privately he
+              expands a network of poaching and captivity, faking natural births of dolphins and orcas to
+              justify new facilities and larger profits.</p>
+          </div>
+
+          <div class="moment reveal">
+            <span class="node" aria-hidden="true"></span>
+            <h4>Elias’s Redemption</h4>
+            <p>Elias carries the guilt of those years. He studies robotics and bio-engineering, eventually
+              building a secret high-tech laboratory beneath the ocean. His goal is singular: to create
+              technology that protects the seas rather than exploits them. He begins designing robotic
+              systems capable of removing plastic, monitoring reefs, and deterring illegal fishing. The
+              project is called Guardians of the Deep.</p>
+            <p>Meanwhile, Marty’s daughter Sarah grows up inside the Aquapark empire. As a child she presses
+              her hand against the glass of a small tank and shares a quiet, wordless moment with a captive
+              dolphin. The connection stays with her. As a young adult she studies bio-engineering at a
+              prestigious university in Sydney, still working shifts at the park, still carrying the quiet
+              sorrow of the animals she cannot free.</p>
+          </div>
+
+          <div class="moment reveal">
+            <span class="node" aria-hidden="true"></span>
+            <h4>The Creation of 001</h4>
+            <p>In the present day, a curious young dolphin triggers an underwater mine. Critically injured,
+              he is rescued by Elias, who brings him to his underwater lab and performs a radical procedure
+              fusing living tissue with advanced robotics. The result is the first hybrid: half biological,
+              half machine, cyborg — prototype 001.</p>
+          </div>
         </article>
-        <article class="beat reveal">
-          <div class="no">ACT 2</div>
-          <h3>Prototype 001</h3>
-          <p>In a hidden laboratory on the ocean floor, a gentle genius gives a critically injured dolphin a second
-            chance: half biological, half machine. The first of his kind.</p>
+
+        <!-- ---- ACT TWO ---- -->
+        <article class="act">
+          <div class="actmark reveal" aria-hidden="true">II</div>
+          <div class="reveal">
+            <div class="actlbl">Act Two</div>
+            <h3>The Fleet and the Lie</h3>
+          </div>
+
+          <div class="moment reveal">
+            <span class="node" aria-hidden="true"></span>
+            <h4>The Reunion</h4>
+            <p>Marty reconnects with his long-lost brother and convinces him to hand over his project. Elias
+              hesitates. He wants only to protect the oceans. Marty promises exactly that. Reluctantly, Elias
+              agrees. 001 is transferred to Marty’s control and becomes the commander of a growing robotic
+              fleet launched from a massive solar-powered mothership.</p>
+          </div>
+
+          <div class="moment reveal">
+            <span class="node" aria-hidden="true"></span>
+            <h4>The Double Game</h4>
+            <p>Publicly, Marty presents the fleet as a triumph of green technology: robots that eat plastic
+              and convert it into fuel. <span class="said">“We turn trash into treasure,”</span> he tells
+              cameras. Privately, in a dark office with corrupt officials and a military commander, he
+              unveils the real product line, classified: Guardians Military Edition. Killer narwhals. Swarm
+              mosquito drones. Torpedo whales. <span class="said">“Cleanup was good PR,”</span> he says.
+              <span class="said">“This is the real deal.”</span></p>
+          </div>
+
+          <div class="moment reveal">
+            <span class="node" aria-hidden="true"></span>
+            <h4>Uno Meets the World</h4>
+            <p>While supervising the cleanup fleet, 001 drifts beyond his designated perimeter. He encounters
+              a pod of wild dolphins playfully passing a pufferfish. One of them shoves the fish into his
+              mouth. The toxins scramble his systems. Hallucinations and childhood flashbacks overwhelm him.
+              HUD warnings flash: Low Battery. Oxygen Critical. He surfaces in a daze and collides with a
+              young woman on a surfboard — Sarah.</p>
+            <p>Using the last of his power and oxygen, he saves Sarah’s life. Both are washed ashore. Her
+              university friends, Theo and Jasper, help carry the unconscious cyborg to the bio-engineering
+              lab. There, she sees the serial number “001” and renames him Uno.</p>
+          </div>
+
+          <div class="moment reveal">
+            <span class="node" aria-hidden="true"></span>
+            <h4>The Discovery</h4>
+            <p>While Uno is resurrected, Sarah returns to the Aquapark for a routine shift. She overhears her
+              father negotiating the military deal. Shaken, she returns to the lab. She discovers that Uno
+              was created by Elias, and reaches out to him for help.</p>
+          </div>
         </article>
-        <article class="beat reveal">
-          <div class="no">ACT 3</div>
-          <h3>She Named Him Uno</h3>
-          <p>When the prototype collides with a fearless young woman named Sarah, she sees past the serial number — and
-            gives him the one upgrade no engineer ever could: a heart &amp; name.</p>
+
+        <!-- ---- ACT THREE ---- -->
+        <article class="act">
+          <div class="actmark reveal" aria-hidden="true">III</div>
+          <div class="reveal">
+            <div class="actlbl">Act Three</div>
+            <h3>The First True Guardian</h3>
+          </div>
+
+          <div class="moment reveal">
+            <span class="node" aria-hidden="true"></span>
+            <h4>The Upgrade</h4>
+            <p>Elias arrives at the university lab. Together, he and Sarah perform a second transformation.
+              She installs a living biological heart. Elias equips Uno with an EMP device capable of
+              disabling the militarized robots, and uploads a new layer of data — music, poetry, philosophy,
+              and history — an algorithm of empathy and meaning. For the first time, Uno can feel.</p>
+          </div>
+
+          <div class="moment reveal">
+            <span class="node" aria-hidden="true"></span>
+            <h4>The Choice</h4>
+            <p>Armed with emotion and purpose, Uno returns to the ocean. He confronts the fleet that once
+              obeyed him and the weapons Marty is preparing to deploy. Using the EMP and the loyalty of the
+              original cleanup robots, he disables the military variants without destroying the beneficial
+              technology. The Guardians of the Deep are reclaimed for their original purpose.</p>
+          </div>
+
+          <div class="moment reveal">
+            <span class="node" aria-hidden="true"></span>
+            <h4>Resolution</h4>
+            <p>Marty is exposed. The Aquapark empire faces public reckoning. Elias and Sarah stand together
+              with Uno as the robotic fleet resumes its true work: cleaning plastic, protecting reefs, and
+              guarding the living ocean. Uno, once a serial number, now swims with a heart — and with a
+              family that chose him.</p>
+          </div>
         </article>
       </div>
+
       <p class="story-outro reveal">“And somewhere below, the ocean is choosing its guardian.”</p>
     </div>
   </section>
@@ -475,6 +711,68 @@
   </section>
 
   <!-- ============ FINALE ============ -->
+  <!-- ============ VISION ============ -->
+  <section id="vision">
+    <div class="wrap">
+      <div class="kicker gold reveal">Why we are making this</div>
+      <h2 class="reveal">Technology, Taught to Care</h2>
+      <p class="manifesto reveal">The same innovations that can harm the planet can also
+        <em>heal it</em> — if guided by empathy rather than extraction.</p>
+
+      <div class="vgrid">
+        <article class="vcard reveal">
+          <div class="tlabel">Personal Statement</div>
+          <div class="prose">
+            <p>We were inspired by the extraordinary work of the team at Edge FX, the same creators behind
+              the iconic animatronic whale in <i>Free Willy</i>, the whales of <i>Star Trek IV: The Voyage
+              Home</i>, and countless theme-park creatures. Their ability to blend engineering with emotion —
+              to make audiences fall in love with a living, breathing animal that is in part machine —
+              showed us that technology and heart can exist in the same body.</p>
+            <p><i>UNO: Guardians of the Deep</i> grows from that same spirit. It imagines a future where
+              robotics and bio-engineering are used not to keep animals in captivity, but to set them free,
+              replacing live shows with breathtaking animatronics while returning real animals to protected
+              sanctuaries. At a time when the oceans need guardians, this story offers a hopeful vision:
+              that curiosity, kindness, and second chances can turn even the most complicated inventions
+              into forces for good.</p>
+          </div>
+        </article>
+
+        <article class="vcard reveal">
+          <div class="tlabel">Themes &amp; Vision</div>
+          <div class="prose">
+            <p><i>UNO: Guardians of the Deep</i> is an optimistic science-fiction adventure that treats
+              technology as a moral instrument. The film argues that the same innovations that can harm the
+              planet can also heal it, if guided by empathy rather than extraction.</p>
+            <p>At its core, this is a story about second chances — for a broken dolphin, a guilty scientist,
+              a conflicted daughter, and a planet that still has time to be protected.</p>
+            <div class="tone">
+              <p><b>Tone</b><br>Pixar and DreamWorks-inspired 3D animation with heart, humor, and genuine
+                stakes. Family-friendly without being simplistic. The ocean is rendered as both a playground
+                and a sacred space. The comedy of the reef creatures — a grumpy crab, a paranoid octopus,
+                arguing starfish, and an ancient turtle — balances the darker corporate and military
+                threads.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="credits">
+        <div class="cgroup reveal">
+          <h5>Written by</h5>
+          <p>Arash Romaeo Jahroudi<br>Sonia Lowe<br>Jeronimas Vysniauskas</p>
+        </div>
+        <div class="cgroup reveal">
+          <h5>Produced by</h5>
+          <p>Arash Romaeo Jahroudi<br>Jeronimas Vysniauskas<br>Sean Behm</p>
+        </div>
+        <div class="cgroup reveal">
+          <h5>Enquiries</h5>
+          <p><a href="mailto:unoxprize@gmail.com">unoxprize@gmail.com</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="finale">
     <div class="swim cruise" id="finale-angler">
       <div class="bob2"><img src="{{A:angler}}" alt="An anglerfish of Fantasea" width="1000" height="535" loading="lazy" decoding="async" style="aspect-ratio:1000/535"></div>
@@ -715,18 +1013,26 @@ var storyUno = document.getElementById('story-uno');
 var whale = document.getElementById('threat-whale');
 var worldBg = document.getElementById('worldBg');
 var sec = {};
-var zones = [['hero','SURFACE'],['story','THE STORY'],['cast','THE CREW'],['threat','RESTRICTED'],['world','FANTASEA'],['finale','THE DEEP']];
+var zones = [['hero','SURFACE'],['story','THE STORY'],['cast','THE CREW'],['threat','RESTRICTED'],['world','FANTASEA'],['vision','THE VISION'],['finale','THE DEEP']];
+var spineFill = document.getElementById('spineFill');
+var diveBox = null;
 var critFls = [];
 
 function measure(){
   W = (window.visualViewport && visualViewport.width) || innerWidth;
   H = (window.visualViewport && visualViewport.height) || innerHeight;
   DPR = Math.min(devicePixelRatio || 1, isPhone ? 1.15 : 1.5);
-  ['hero','story','cast','threat','world','finale'].forEach(function(id){
+  ['hero','story','cast','threat','world','vision','finale'].forEach(function(id){
     var el = document.getElementById(id);
+    if(!el) return;
     var r = el.getBoundingClientRect();
     sec[id] = {top: r.top + window.scrollY, h: r.height};
   });
+  var dv = document.querySelector('.dive');
+  if(dv){
+    var dr = dv.getBoundingClientRect();
+    diveBox = {top: dr.top + window.scrollY, h: Math.max(1, dr.height)};
+  }
   sizeGL();
 }
 function secP(id){ // 0 when section top enters bottom of viewport, 1 when bottom leaves top
@@ -775,6 +1081,12 @@ function frame(ts){
     // temple parallax
     var p3 = secP('world');
     worldBg.style.transform = 'translate3d(0,' + (-9 + 15*p3) + '%,0) scale(' + (1.08 - 0.08*p3) + ')';
+
+    // treatment spine: fills aqua -> gold as the reading line descends the acts
+    if(spineFill && diveBox){
+      var dp = (sy + H*0.62 - diveBox.top) / diveBox.h;
+      spineFill.style.height = (Math.max(0, Math.min(1, dp))*100) + '%';
+    }
 
     // reef critters gentle counter-drift
     var p4 = secP('cast');
