@@ -331,7 +331,11 @@
 
   /* ---------- world ---------- */
   #world{padding:0; min-height:120vh; display:flex; align-items:flex-end; overflow:hidden}
-  #world .bgimg{position:absolute; inset:-6% 0; width:100%; height:112%; object-fit:cover; z-index:0; will-change:transform}
+  /* opacity is driven per-frame in JS so the temple rises out of the dark as you
+     enter the section. deliberately NOT set to 0 here -- JS zeroes it at boot, so
+     no-JS and reduced-motion both fall back to a fully visible image. */
+  #world .bgimg{position:absolute; inset:-6% 0; width:100%; height:112%; object-fit:cover; z-index:0;
+    will-change:transform,opacity}
   #world .veil{position:absolute; inset:0; z-index:1;
     background:linear-gradient(180deg,#03101f 0%,rgba(3,16,31,0) 24%,rgba(3,16,31,0) 58%,rgba(2,10,20,.75) 84%,#020a14 100%)}
   #world .wrap{padding:0 6vw 16vh; z-index:2}
@@ -700,7 +704,7 @@
 
   <!-- ============ WORLD ============ -->
   <section id="world">
-    <img class="bgimg" id="worldBg" src="/assets/temple.webp" alt="The sunken temple of Fantasea" width="1600" height="900" loading="lazy" decoding="async">
+    <img class="bgimg" id="worldBg" src="/assets/temple.webp" alt="The sunken temple of Fantasea — stone guardians flanking a lit gateway" width="1672" height="941" loading="lazy" decoding="async">
     <div class="veil"></div>
     <div class="wrap">
       <div class="kicker reveal">The world of Fantasea</div>
@@ -1012,6 +1016,7 @@ var heroUno = document.getElementById('hero-uno');
 var storyUno = document.getElementById('story-uno');
 var whale = document.getElementById('threat-whale');
 var worldBg = document.getElementById('worldBg');
+var bgK = 0;
 var sec = {};
 var zones = [['hero','SURFACE'],['story','THE STORY'],['cast','THE CREW'],['threat','RESTRICTED'],['world','FANTASEA'],['vision','THE VISION'],['finale','THE DEEP']];
 var spineFill = document.getElementById('spineFill');
@@ -1081,6 +1086,11 @@ function frame(ts){
     // temple parallax
     var p3 = secP('world');
     worldBg.style.transform = 'translate3d(0,' + (-9 + 15*p3) + '%,0) scale(' + (1.08 - 0.08*p3) + ')';
+    // rise out of the dark: ramp over the first third of the section, gated on
+    // decode so a slow network fades in rather than snapping.
+    bgK += ((worldBg.complete ? 1 : 0) - bgK) * 0.05;
+    var bgF = Math.max(0, Math.min(1, (p3 - 0.05) / 0.30));
+    worldBg.style.opacity = (bgF * bgK).toFixed(3);
 
     // treatment spine: fills aqua -> gold as the reading line descends the acts
     if(spineFill && diveBox){
@@ -1132,6 +1142,7 @@ function initReveals(){
    BOOT
    ============================================================ */
 critFls = [].slice.call(document.querySelectorAll('.critter .fl'));
+if(!reduced && worldBg) worldBg.style.opacity = '0';
 measure();
 onScroll();
 initReveals();
