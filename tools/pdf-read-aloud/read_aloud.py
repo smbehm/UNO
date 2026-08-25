@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
-"""Extract text from a PDF and narrate it with natural neural TTS.
+"""Extract text from a PDF and narrate it with Hugging Face Kokoro-82M TTS.
 
-Outputs an MP3 (and optional VTT cues) suitable for playback in Cursor artifacts.
-Uses Microsoft Edge neural voices via edge-tts — no API key required.
+Uses hexgrad/Kokoro-82M (Apache-2.0) via the `kokoro` package — natural neural
+speech that runs on CPU. No paid API key required.
 """
 
 from __future__ import annotations
 
 import argparse
-import asyncio
 import re
 import shutil
 import subprocess
@@ -16,23 +15,20 @@ import sys
 import tempfile
 from pathlib import Path
 
-DEFAULT_VOICE = "en-US-AndrewMultilingualNeural"
-# Slightly slower reads feel more natural for long-form narration.
-DEFAULT_RATE = "-8%"
-DEFAULT_PITCH = "+0Hz"
-# Soft ceiling per TTS request; paragraphs are kept intact when possible.
-MAX_CHUNK_CHARS = 2800
+# Hugging Face: hexgrad/Kokoro-82M
+DEFAULT_VOICE = "am_michael"  # natural male American narrator
+DEFAULT_SPEED = 0.95
+DEFAULT_REPO = "hexgrad/Kokoro-82M"
+DEFAULT_LANG = "a"  # American English
 MIN_TEXT_CHARS_FOR_NATIVE = 40
+SAMPLE_RATE = 24000
 
 
 def extract_text_pypdf(pdf_path: Path) -> str:
     from pypdf import PdfReader
 
     reader = PdfReader(str(pdf_path))
-    parts: list[str] = []
-    for page in reader.pages:
-        parts.append(page.extract_text() or "")
-    return "\n".join(parts)
+    return "\n".join((page.extract_text() or "") for page in reader.pages)
 
 
 def extract_text_pdftotext(pdf_path: Path) -> str:
@@ -48,7 +44,6 @@ def extract_text_pdftotext(pdf_path: Path) -> str:
 
 
 def extract_text_ocr(pdf_path: Path, max_pages: int | None = None) -> str:
-    """OCR fallback for scanned/image PDFs (requires poppler + tesseract)."""
     if not shutil.which("pdftoppm") or not shutil.which("tesseract"):
         return ""
 
@@ -62,9 +57,8 @@ def extract_text_ocr(pdf_path: Path, max_pages: int | None = None) -> str:
         if proc.returncode != 0:
             return ""
 
-        pages = sorted(tmp_path.glob("page-*.png"))
         texts: list[str] = []
-        for page in pages:
+        for page in sorted(tmp_path.glob("page-*.png")):
             out = subprocess.run(
                 ["tesseract", str(page), "stdout", "-l", "eng", "--psm", "1"],
                 check=False,
@@ -76,193 +70,104 @@ def extract_text_ocr(pdf_path: Path, max_pages: int | None = None) -> str:
         return "\n\n".join(texts)
 
 
-def extract_pdf_text(pdf_path: Path, force_ocr: bool = False, ocr_max_pages: int | None = None) -> str:
+def extract_pdf_text(
+    pdf_path: Path, force_ocr: bool = False, ocr_max_pages: int | None = None
+) -> str:
     if force_ocr:
         text = extract_text_ocr(pdf_path, ocr_max_pages)
         if text.strip():
             return text
         raise RuntimeError("OCR produced no text (is tesseract/poppler installed?)")
 
-    candidates = [
-        extract_text_pdftotext(pdf_path),
-        extract_text_pypdf(pdf_path),
-    ]
+    candidates = [extract_text_pdftotext(pdf_path), extract_text_pypdf(pdf_path)]
     best = max(candidates, key=lambda t: len(re.sub(r"\s+", "", t or "")))
     if len(re.sub(r"\s+", "", best)) >= MIN_TEXT_CHARS_FOR_NATIVE:
         return best
 
     ocr = extract_text_ocr(pdf_path, ocr_max_pages)
-    if ocr.strip():
-        return ocr
-    return best
+    return ocr if ocr.strip() else best
 
 
 def clean_narration_text(raw: str) -> str:
     """Normalize PDF extraction artifacts into speakable prose."""
     text = raw.replace("\r\n", "\n").replace("\r", "\n")
-    # Join hyphenated line breaks: "swim-\ning" -> "swimming"
     text = re.sub(r"(\w)-\n(\w)", r"\1\2", text)
-    # Collapse soft wrap newlines inside paragraphs into spaces
     text = re.sub(r"(?<!\n)\n(?!\n)", " ", text)
-    # Normalize whitespace
     text = re.sub(r"[ \t]+", " ", text)
     text = re.sub(r"\n{3,}", "\n\n", text)
 
-    cleaned_lines: list[str] = []
+    cleaned: list[str] = []
     for line in text.split("\n"):
         s = line.strip()
         if not s:
-            cleaned_lines.append("")
+            cleaned.append("")
             continue
-        # Drop lone page numbers / running folio lines
         if re.fullmatch(r"\d{1,4}", s):
             continue
         if re.fullmatch(r"(?i)page\s+\d+(\s+of\s+\d+)?", s):
             continue
-        cleaned_lines.append(s)
+        cleaned.append(s)
 
-    text = "\n".join(cleaned_lines)
-    text = re.sub(r"\n{3,}", "\n\n", text).strip()
-    return text
+    return re.sub(r"\n{3,}", "\n\n", "\n".join(cleaned)).strip()
 
 
-def split_into_chunks(text: str, max_chars: int = MAX_CHUNK_CHARS) -> list[str]:
-    paragraphs = [p.strip() for p in re.split(r"\n\s*\n", text) if p.strip()]
-    if not paragraphs:
-        return []
-
-    chunks: list[str] = []
-    current = ""
-    for para in paragraphs:
-        # Oversized paragraph: split on sentences
-        pieces = [para] if len(para) <= max_chars else _split_sentences(para, max_chars)
-        for piece in pieces:
-            if not current:
-                current = piece
-            elif len(current) + 2 + len(piece) <= max_chars:
-                current = f"{current}\n\n{piece}"
-            else:
-                chunks.append(current)
-                current = piece
-    if current:
-        chunks.append(current)
-    return chunks
-
-
-def _split_sentences(text: str, max_chars: int) -> list[str]:
-    parts = re.split(r"(?<=[.!?])\s+", text)
-    chunks: list[str] = []
-    current = ""
-    for part in parts:
-        if not current:
-            current = part
-        elif len(current) + 1 + len(part) <= max_chars:
-            current = f"{current} {part}"
-        else:
-            chunks.append(current)
-            current = part
-    if current:
-        chunks.append(current)
-    # Hard-wrap any remaining giants
-    final: list[str] = []
-    for c in chunks:
-        if len(c) <= max_chars:
-            final.append(c)
-        else:
-            for i in range(0, len(c), max_chars):
-                final.append(c[i : i + max_chars])
-    return final
-
-
-async def synthesize_chunk(
+def synthesize_kokoro(
     text: str,
     voice: str,
-    rate: str,
-    pitch: str,
-    out_path: Path,
-) -> None:
-    import edge_tts
-
-    communicate = edge_tts.Communicate(text, voice, rate=rate, pitch=pitch)
-    await communicate.save(str(out_path))
-
-
-async def synthesize_document(
-    text: str,
-    voice: str,
-    rate: str,
-    pitch: str,
-    out_mp3: Path,
-    work_dir: Path,
+    speed: float,
+    lang_code: str,
+    repo_id: str,
+    out_wav: Path,
 ) -> int:
-    chunks = split_into_chunks(text)
+    """Synthesize with Hugging Face Kokoro-82M. Returns number of segments."""
+    import numpy as np
+    import soundfile as sf
+    from kokoro import KPipeline
+
+    print(f"Loading Hugging Face model {repo_id} ...", flush=True)
+    pipeline = KPipeline(lang_code=lang_code, repo_id=repo_id)
+
+    chunks: list = []
+    segments = 0
+    generator = pipeline(
+        text,
+        voice=voice,
+        speed=speed,
+        split_pattern=r"\n+",
+    )
+    for i, (gs, _ps, audio) in enumerate(generator):
+        segments += 1
+        preview = (gs or "").replace("\n", " ")[:72]
+        print(f"  segment {i + 1}: {preview}...", flush=True)
+        chunks.append(audio)
+        # Short pause between paragraphs
+        chunks.append(np.zeros(int(SAMPLE_RATE * 0.28), dtype=np.float32))
+
     if not chunks:
-        raise RuntimeError("No speakable text after cleanup.")
+        raise RuntimeError("Kokoro produced no audio")
 
-    part_paths: list[Path] = []
-    for i, chunk in enumerate(chunks):
-        part = work_dir / f"part-{i:04d}.mp3"
-        await synthesize_chunk(chunk, voice, rate, pitch, part)
-        part_paths.append(part)
-        # Brief pause between paragraphs/sections for natural pacing
-        if i < len(chunks) - 1:
-            silence = work_dir / f"silence-{i:04d}.mp3"
-            _write_silence_mp3(silence, duration_ms=320)
-            part_paths.append(silence)
-
-    _concat_mp3(part_paths, out_mp3)
-    return len(chunks)
+    audio = np.concatenate(chunks)
+    out_wav.parent.mkdir(parents=True, exist_ok=True)
+    sf.write(str(out_wav), audio, SAMPLE_RATE)
+    return segments
 
 
-def _write_silence_mp3(path: Path, duration_ms: int = 320) -> None:
-    # Generate tiny silence with ffmpeg so concat stays in one container format.
+def wav_to_mp3(wav_path: Path, mp3_path: Path) -> None:
     subprocess.run(
         [
             "ffmpeg",
             "-y",
-            "-f",
-            "lavfi",
             "-i",
-            "anullsrc=r=24000:cl=mono",
-            "-t",
-            f"{duration_ms / 1000:.3f}",
+            str(wav_path),
             "-c:a",
             "libmp3lame",
             "-b:a",
-            "48k",
-            str(path),
+            "192k",
+            str(mp3_path),
         ],
         check=True,
         capture_output=True,
     )
-
-
-def _concat_mp3(parts: list[Path], out_path: Path) -> None:
-    """Concatenate parts (or re-encode a single part) to a clear 192k MP3."""
-    list_file = out_path.with_suffix(".concat.txt")
-    list_file.write_text("".join(f"file '{p.resolve()}'\n" for p in parts))
-    try:
-        subprocess.run(
-            [
-                "ffmpeg",
-                "-y",
-                "-f",
-                "concat",
-                "-safe",
-                "0",
-                "-i",
-                str(list_file),
-                "-c:a",
-                "libmp3lame",
-                "-b:a",
-                "192k",
-                str(out_path),
-            ],
-            check=True,
-            capture_output=True,
-        )
-    finally:
-        list_file.unlink(missing_ok=True)
 
 
 def probe_duration_seconds(path: Path) -> float | None:
@@ -293,79 +198,64 @@ def probe_duration_seconds(path: Path) -> float | None:
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(
-        description="Read a PDF aloud with natural neural TTS (edge-tts)."
+        description="Read a PDF aloud with Hugging Face Kokoro-82M TTS."
     )
-    p.add_argument(
-        "pdf",
-        type=Path,
-        nargs="?",
-        default=None,
-        help="Path to the PDF file",
-    )
-    p.add_argument(
-        "-o",
-        "--output",
-        type=Path,
-        default=None,
-        help="Output MP3 path (default: <pdf-stem>-narration.mp3)",
-    )
+    p.add_argument("pdf", type=Path, nargs="?", default=None, help="Path to the PDF")
+    p.add_argument("-o", "--output", type=Path, default=None, help="Output MP3 path")
     p.add_argument(
         "--voice",
         default=DEFAULT_VOICE,
-        help=f"edge-tts voice (default: {DEFAULT_VOICE})",
-    )
-    p.add_argument("--rate", default=DEFAULT_RATE, help='Speaking rate, e.g. "-8%"')
-    p.add_argument("--pitch", default=DEFAULT_PITCH, help='Pitch, e.g. "+0Hz"')
-    p.add_argument(
-        "--text-out",
-        type=Path,
-        default=None,
-        help="Also write the cleaned narration text to this path",
+        help=f"Kokoro voice id (default: {DEFAULT_VOICE})",
     )
     p.add_argument(
-        "--force-ocr",
-        action="store_true",
-        help="Force OCR even if the PDF has extractable text",
+        "--speed",
+        type=float,
+        default=DEFAULT_SPEED,
+        help=f"Speaking speed (default: {DEFAULT_SPEED})",
     )
     p.add_argument(
-        "--ocr-max-pages",
-        type=int,
-        default=None,
-        help="Limit OCR to the first N pages (useful for large scans)",
+        "--lang",
+        default=DEFAULT_LANG,
+        help="Kokoro lang_code: a=American, b=British (default: a)",
     )
+    p.add_argument("--repo", default=DEFAULT_REPO, help="Hugging Face model repo id")
+    p.add_argument("--text-out", type=Path, default=None, help="Write cleaned text here")
+    p.add_argument("--force-ocr", action="store_true")
+    p.add_argument("--ocr-max-pages", type=int, default=None)
     p.add_argument(
         "--list-voices",
         action="store_true",
-        help="List recommended English narration voices and exit",
+        help="List recommended Kokoro English voices and exit",
+    )
+    p.add_argument(
+        "--keep-wav",
+        action="store_true",
+        help="Also keep the intermediate WAV next to the MP3",
     )
     return p.parse_args(argv)
 
 
-async def list_recommended_voices() -> None:
-    import edge_tts
-
-    prefer = [
-        "en-US-AndrewMultilingualNeural",
-        "en-US-AvaMultilingualNeural",
-        "en-US-EmmaMultilingualNeural",
-        "en-US-BrianMultilingualNeural",
-        "en-US-AndrewNeural",
-        "en-US-AriaNeural",
-        "en-GB-SoniaNeural",
-        "en-GB-RyanNeural",
-        "en-AU-NatashaNeural",
-    ]
-    voices = {v["ShortName"]: v for v in await edge_tts.list_voices()}
-    for name in prefer:
-        v = voices.get(name)
-        if v:
-            print(f"{v['ShortName']:40} {v['Locale']:8} {v['Gender']}")
+RECOMMENDED_VOICES = [
+    ("am_michael", "American male — clear narrator"),
+    ("am_fenrir", "American male — deeper"),
+    ("am_adam", "American male"),
+    ("af_heart", "American female — warm (flagship)"),
+    ("af_bella", "American female"),
+    ("af_sarah", "American female"),
+    ("af_nicole", "American female"),
+    ("bm_george", "British male"),
+    ("bm_fable", "British male"),
+    ("bf_emma", "British female"),
+    ("bf_isabella", "British female"),
+]
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     if args.list_voices:
-        asyncio.run(list_recommended_voices())
+        for vid, desc in RECOMMENDED_VOICES:
+            print(f"{vid:16}  {desc}")
+        print(f"\nModel: {DEFAULT_REPO} (Hugging Face)")
         return 0
 
     if args.pdf is None:
@@ -395,25 +285,32 @@ def main(argv: list[str] | None = None) -> int:
 
     words = len(re.findall(r"\S+", text))
     print(
-        f"Narrating ~{words} words with {args.voice} (rate {args.rate}) ...",
+        f"Narrating ~{words} words with HF/{args.repo} voice={args.voice} speed={args.speed} ...",
         flush=True,
     )
 
-    with tempfile.TemporaryDirectory(prefix="pdf-tts-") as tmp:
-        chunks = asyncio.run(
-            synthesize_document(
-                text,
-                voice=args.voice,
-                rate=args.rate,
-                pitch=args.pitch,
-                out_mp3=out_mp3,
-                work_dir=Path(tmp),
-            )
+    with tempfile.TemporaryDirectory(prefix="pdf-kokoro-") as tmp:
+        wav_path = Path(tmp) / "narration.wav"
+        segments = synthesize_kokoro(
+            text,
+            voice=args.voice,
+            speed=args.speed,
+            lang_code=args.lang,
+            repo_id=args.repo,
+            out_wav=wav_path,
         )
+        if args.keep_wav:
+            kept = out_mp3.with_suffix(".wav")
+            shutil.copyfile(wav_path, kept)
+            print(f"Kept WAV → {kept}")
+        print(f"Encoding MP3 → {out_mp3} ...", flush=True)
+        wav_to_mp3(wav_path, out_mp3)
 
     duration = probe_duration_seconds(out_mp3)
-    dur_msg = f", {duration:.1f}s" if duration is not None else ""
-    print(f"Done: {out_mp3} ({chunks} chunk(s){dur_msg})")
+    dur_msg = f", {duration / 60:.1f} min" if duration and duration >= 60 else (
+        f", {duration:.1f}s" if duration else ""
+    )
+    print(f"Done: {out_mp3} ({segments} segment(s){dur_msg})")
     return 0
 
 

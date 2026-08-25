@@ -1,14 +1,15 @@
-# PDF Read Aloud
+# PDF Read Aloud (Hugging Face)
 
-Narrate a PDF with natural neural text-to-speech (Microsoft Edge voices via `edge-tts`). No API key required.
+Narrate a PDF with **Kokoro-82M** from Hugging Face (`hexgrad/Kokoro-82M`) — natural neural TTS that runs on CPU.
 
 ## Setup
 
 ```bash
-pip install -r tools/pdf-read-aloud/requirements.txt
-# Optional but recommended for better extraction / scanned PDFs:
-# sudo apt-get install -y poppler-utils tesseract-ocr
+pip3 install -r tools/pdf-read-aloud/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+sudo apt-get install -y poppler-utils tesseract-ocr ffmpeg espeak-ng
 ```
+
+Optional: set `HF_TOKEN` for higher Hugging Face Hub rate limits.
 
 ## Usage
 
@@ -18,30 +19,26 @@ python3 tools/pdf-read-aloud/read_aloud.py path/to/doc.pdf \
   --text-out /tmp/doc-cleaned.txt
 ```
 
-List recommended voices:
+List voices:
 
 ```bash
 python3 tools/pdf-read-aloud/read_aloud.py --list-voices
 ```
 
-Useful options:
-
 | Flag | Purpose |
 |------|---------|
-| `--voice en-US-AvaMultilingualNeural` | Alternate natural voice |
-| `--rate -8%` | Slightly slower audiobook pacing (default) |
+| `--voice am_michael` | Kokoro voice (default narrator) |
+| `--voice af_heart` | Warm female flagship voice |
+| `--speed 0.95` | Speaking rate |
 | `--force-ocr` | OCR scanned/image PDFs |
-| `--ocr-max-pages 20` | Limit OCR cost on large scans |
+| `--repo hexgrad/Kokoro-82M` | Hugging Face model id |
 
-## Voices (most natural)
+## Sample
 
-- `en-US-AndrewMultilingualNeural` (default) — warm male narration
-- `en-US-AvaMultilingualNeural` — warm female narration
-- `en-US-EmmaMultilingualNeural` / `en-US-BrianMultilingualNeural`
+`samples/uno-guardians-treatment.pdf` — full film treatment (~1000 words).
 
 ## Agent workflow
 
-1. Accept a PDF from the user (attachment or path).
-2. Run `read_aloud.py` and write the MP3 under `/opt/cursor/artifacts/`.
-3. Share the audio artifact so the user can play it.
-4. For long books, narrate in chapters or page ranges and confirm before continuing.
+1. Accept a PDF from the user.
+2. Run `read_aloud.py` with Kokoro; write MP3 under `/opt/cursor/artifacts/`.
+3. Share the audio for playback (full narration, not a short clip).

@@ -1,15 +1,15 @@
 ---
 name: pdf-read-aloud
-description: Read a PDF aloud with natural neural TTS. Use when the user asks to read, narrate, or listen to a PDF, document, paper, book, or article.
+description: Read a PDF aloud with Hugging Face Kokoro-82M natural TTS. Use when the user asks to read, narrate, listen to, or convert a PDF to speech.
 ---
 
-# PDF Read Aloud
+# PDF Read Aloud (Hugging Face Kokoro)
 
-When the user wants a PDF read aloud, use the repo tool — do not improvise with robotic system voices.
+Use `tools/pdf-read-aloud/read_aloud.py` with **hexgrad/Kokoro-82M** — not Edge TTS, not system `espeak`.
 
 ## Steps
 
-1. Locate the PDF (attachment path, workspace path, or download URL).
+1. Locate the user's PDF (required — do not substitute a tiny demo).
 2. Run:
 
 ```bash
@@ -18,13 +18,7 @@ python3 tools/pdf-read-aloud/read_aloud.py "$PDF" \
   --text-out /tmp/pdf-narration-cleaned.txt
 ```
 
-3. Share the MP3 artifact for playback. Mention the voice used and approximate duration.
-4. Default voice: `en-US-AndrewMultilingualNeural` (warm, natural). Offer `en-US-AvaMultilingualNeural` if they prefer a female narrator.
-5. For scanned PDFs with little extractable text, re-run with `--force-ocr` (and `--ocr-max-pages` for large docs).
-6. For long documents (>~20 min of audio), narrate in sections and ask before continuing.
-
-## Naturalness knobs
-
-- Keep default `--rate -8%` for audiobook pacing.
-- Do not dump raw PDF text into chat as a substitute for audio unless the user asks for text only.
-- Prefer chapter/section chunking over one giant file when the PDF is book-length.
+3. Share the full MP3. Report voice, model (`hexgrad/Kokoro-82M`), and duration.
+4. Default voice: `am_michael`. Offer `af_heart` for a female narrator.
+5. Scanned PDFs: `--force-ocr` (and `--ocr-max-pages` for large scans).
+6. For book-length PDFs, narrate in sections and confirm before continuing.
