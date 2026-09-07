@@ -475,7 +475,8 @@
         <iframe
           src="https://www.youtube.com/embed/7RcKBipTxSE?playsinline=1&rel=0"
           title="UNO: Guardians of the Deep — Official Trailer"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+          allowfullscreen
           loading="lazy"></iframe>
       </div>
       <div class="vlabel reveal">3 Minute Trailer</div>
@@ -1249,9 +1250,8 @@ function buildFrame(autoplay){
   var f = document.createElement('iframe');
   f.src = 'https://www.youtube.com/embed/' + FILM_ID + '?playsinline=1&rel=0' + (autoplay ? '&autoplay=1' : '');
   f.title = 'UNO: Guardians of the Deep — 25 Minute Short Film';
-  // 'fullscreen' in allow supersedes the legacy allowfullscreen attribute;
-  // carrying both makes Chrome warn, and 'web-share' is not a real feature name.
-  f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+  f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen';
+  f.setAttribute('allowfullscreen', '');
   host.appendChild(f);
 }
 function openFilm(autoplay){
@@ -1366,10 +1366,7 @@ function buildScene(T){
   lamp(0x9fe6ff, 0.7, -12,  3,  0,  8, 10,  0,  Math.PI / 2);
   lamp(0xffcf6a, 7,  12,  1,  0,  8, 10,  0, -Math.PI / 2);
   lamp(0xfff4dd, 3,   0,  4, -12, 14, 6,  0, 0);
-  // sigma 0: the lamp planes are already large in solid angle, and the
-  // roughness mip chain does the softening. a non-zero sigma here asked for
-  // 30 blur samples against three's cap of 20 and warned twice on every load.
-  scene.environment = pm.fromScene(es).texture;
+  scene.environment = pm.fromScene(es, 0.06).texture;
   pm.dispose();
 
   scene.add(new T.AmbientLight(0x9dbcd4, 0.28));
