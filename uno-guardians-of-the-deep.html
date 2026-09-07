@@ -381,7 +381,17 @@
   .keyscene{position:relative; width:100%; aspect-ratio:16/10; max-height:520px; margin:0 auto;
     cursor:pointer; -webkit-tap-highlight-color:transparent; outline:none; touch-action:manipulation}
   .keyscene:focus-visible{outline:2px solid var(--aqua); outline-offset:10px; border-radius:24px}
-  .keyscene canvas{display:block; width:100% !important; height:100% !important}
+  /* The canvas bleeds well past its layout box so the glow's falloff finishes
+     inside the texture instead of hitting a hard edge. pointer-events:none keeps
+     the button underneath clickable; the click handler lives on .keyscene. */
+  /* canvas is a REPLACED element: with width:auto, left/right insets do not
+     stretch it -- it falls back to its intrinsic attribute size. The bleed has
+     to be stated as explicit width/height. */
+  .keyscene{--bx:16%; --by:52%; z-index:5}
+  .keyscene canvas{position:absolute; left:calc(var(--bx) * -1); top:calc(var(--by) * -1);
+    width:calc(100% + var(--bx) * 2) !important; height:calc(100% + var(--by) * 2) !important;
+    display:block; pointer-events:none; z-index:5}
+  .keyhint,.again{position:relative; z-index:1}
   /* CSS-only key: shown until three.js is ready, and kept if it never is
      (no WebGL, CDN unreachable, reduced motion). the film is never unreachable. */
   .keyfallback{position:absolute; left:50%; top:50%; width:min(300px,52%); height:auto;
@@ -1338,17 +1348,33 @@ if(!reduced && dynImport && hasWebGL() && 'IntersectionObserver' in window){
    THE SCENE
    ============================================================ */
 function buildScene(T){
-  var W = stage.clientWidth || 800, H = stage.clientHeight || 500;
+  var BASE_FOV = 36;                      // vertical fov across the INNER box
   var renderer = new T.WebGLRenderer({antialias: !isPhone, alpha: true, powerPreference: 'high-performance'});
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, isPhone ? 1.25 : 1.6));
-  renderer.setSize(W, H, false);
+  // the canvas is ~2.5x the area of the box it sits in, so trim dpr to pay for it
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, isPhone ? 1 : 1.35));
   renderer.setClearColor(0x000000, 0);
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
   stage.insertBefore(renderer.domElement, fallback);
 
   var scene = new T.Scene();
-  var cam = new T.PerspectiveCamera(36, W / H, 0.1, 60);
+  var cam = new T.PerspectiveCamera(BASE_FOV, 1.6, 0.1, 60);
+
+  /* The bleed must not change how the key is framed. Widening the vertical fov
+     by exactly the bleed ratio means the inner box still spans BASE_FOV, so the
+     key renders at the same on-screen size as an unbled canvas. */
+  function sizeToCanvas(){
+    var inner = stage.getBoundingClientRect();
+    var c = renderer.domElement.getBoundingClientRect();
+    var cw = Math.round(c.width) || Math.round(inner.width) || 800;
+    var ch = Math.round(c.height) || Math.round(inner.height) || 500;
+    var ih = inner.height || ch;
+    renderer.setSize(cw, ch, false);
+    cam.aspect = cw / ch;
+    cam.fov = 2 * Math.atan(Math.tan(BASE_FOV / 2 * Math.PI / 180) * (ch / ih)) * 180 / Math.PI;
+    cam.updateProjectionMatrix();
+  }
+  sizeToCanvas();
   var CAM_HOME = new T.Vector3(0, 0.7, 5.6);
   cam.position.copy(CAM_HOME);
   var camTarget = new T.Vector3(0, 0.08, -0.4);
@@ -1554,10 +1580,7 @@ function buildScene(T){
   }
   new IntersectionObserver(function(en){ visible = en.some(function(x){ return x.isIntersecting; }); setRunning(); }, {threshold: 0}).observe(stage);
   if('ResizeObserver' in window){
-    new ResizeObserver(function(){
-      var w = stage.clientWidth, h = stage.clientHeight; if(!w || !h) return;
-      renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
-    }).observe(stage);
+    new ResizeObserver(function(){ if(stage.clientWidth && stage.clientHeight) sizeToCanvas(); }).observe(stage);
   }
   setRunning();
 
