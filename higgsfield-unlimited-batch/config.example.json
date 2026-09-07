@@ -1,0 +1,8 @@
+{
+  "startUrl": "https://higgsfield.ai/",
+  "maxWaitMinutes": 45,
+  "pauseBetweenPromptsSeconds": 8,
+  "requireUnlimitedToggle": true,
+  "headless": false,
+  "slowMoMs": 0
+}

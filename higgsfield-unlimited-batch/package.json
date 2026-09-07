@@ -1,0 +1,15 @@
+{
+  "name": "higgsfield-unlimited-batch",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Overnight batch prompts on higgsfield.ai using Unlimited mode (web UI automation)",
+  "type": "module",
+  "scripts": {
+    "setup": "node run-batch.mjs setup",
+    "batch": "node run-batch.mjs batch",
+    "dry-run": "node run-batch.mjs dry-run"
+  },
+  "dependencies": {
+    "playwright": "^1.52.0"
+  }
+}
