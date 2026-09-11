@@ -5,7 +5,7 @@ const attempts=new Map();
 const hash=value=>crypto.createHash('sha256').update(value).digest();
 const equal=(a,b)=>crypto.timingSafeEqual(hash(a),hash(b));
 function secret(){return process.env.LBP_SESSION_SECRET||'';}
-function ready(){return (process.env.LBP_PASSWORD||'').length>=16&&secret().length>=32;}
+function ready(){return (process.env.LBP_PASSWORD||'').length>=7&&secret().length>=32;}
 function sign(payload){return crypto.createHmac('sha256',secret()+process.env.LBP_PASSWORD).update(payload).digest('base64url');}
 function token(){const p=Buffer.from(JSON.stringify({exp:Date.now()+8*3600000,id:crypto.randomUUID()})).toString('base64url');return p+'.'+sign(p);}
 function authorized(req){if(!ready())return false;try{const t=(req.headers.cookie||'').split(';').map(x=>x.trim()).find(x=>x.startsWith('lbp_session='))?.slice(12)||'';const [p,s]=t.split('.');return !!p&&!!s&&equal(sign(p),s)&&JSON.parse(Buffer.from(p,'base64url')).exp>Date.now();}catch{return false;}}
@@ -18,7 +18,7 @@ module.exports=async function handler(req,res){
   let origin;try{origin=new URL(req.headers.origin).host;}catch{return json(res,403,{error:'Please open the studio directly.'});}
   if(origin!==req.headers.host)return json(res,403,{error:'Request origin did not match the studio.'});
   if(!String(req.headers['content-type']||'').startsWith('application/json'))return json(res,415,{error:'JSON required.'});
-  if(!ready())return json(res,503,{error:'Studio setup is pending. Add LBP_PASSWORD (16+ characters) and LBP_SESSION_SECRET (32+ characters) to Vercel, then redeploy.'});
+  if(!ready())return json(res,503,{error:'Studio setup is pending. Add LBP_PASSWORD (7+ characters) and LBP_SESSION_SECRET (32+ characters) to Vercel, then redeploy.'});
   let body;try{body=typeof req.body==='string'?JSON.parse(req.body):req.body;if(!body||Buffer.byteLength(JSON.stringify(body))>40000)throw Error();}catch{return json(res,400,{error:'The request is too large or invalid.'});}
   const ip=String(req.headers['x-forwarded-for']||req.socket?.remoteAddress||'unknown').split(',')[0];
   if(body.action==='login'){

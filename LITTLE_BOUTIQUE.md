@@ -4,7 +4,7 @@ Private film prompt studio at `/little-boutique-productions`. Describe a scene, 
 
 ## Configuration
 
-Add Production secrets in Vercel: `OPENAI_API_KEY`, `LBP_PASSWORD` (16+ characters), and `LBP_SESSION_SECRET` (32+ random characters). Optionally configure `OPENAI_MODEL`; default is `gpt-6-astra`. API model access and billing must be enabled for that project. Redeploy after changing environment variables. Never commit actual credentials.
+Add Production secrets in Vercel: `OPENAI_API_KEY`, `LBP_PASSWORD` (7+ characters), and `LBP_SESSION_SECRET` (32+ random characters). Optionally configure `OPENAI_MODEL`; default is `gpt-6-astra`. API model access and billing must be enabled for that project. Redeploy after changing environment variables. Never commit actual credentials.
 
 The route serves a password gate; API requests require a signed, eight-hour HttpOnly session and same-origin JSON requests. Changing the password or session secret invalidates existing sessions. Pages carry noindex and no-store headers and are absent from site navigation and sitemap. This is a shared studio password, not individual user accounts.
 
