@@ -25,3 +25,8 @@ montage.png
 .idea/
 *.swp
 *.swo
+
+# Studio credentials
+.env*
+!.env.example
+.vercel/
