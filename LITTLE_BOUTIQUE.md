@@ -19,3 +19,7 @@ Node 22 or newer. Run `npm test`. For local use, set environment variables in th
 Tests cover authentication, signed-cookie tampering, password rotation, cross-origin protection, validation, basic throttling, structured API requests, and upstream errors using fixtures. Live model access must also be checked after deployment.
 
 The reviewed universal film instructions live in `lib/guide.cjs`; `lib/director.cjs` adds the web output contract. Capability claims must be periodically reviewed against Higgsfield documentation. A requested 30-second scene may require multiple clips; final prompts are direction, not a guarantee of render quality.
+
+## Credit efficiency
+
+The runtime uses a compact directing guide (lib/runtime-guide.cjs); the full guide is retained for maintenance. GPT-6 Astra remains the model. Reviews use low reasoning and a 3,000-token output ceiling; generation uses medium reasoning and 5,500 tokens, or 7,500 for long scene/dialogue inputs. These ceilings include reasoning tokens and are not expected charges. Question history is limited to 12,000 characters. Identical successful requests are reused in memory within the same tab (up to 10); reloading clears this cache. No automatic paid retries. Actual savings and creative quality need validation with representative scenes. These controls do not impose a hard dollar budget.

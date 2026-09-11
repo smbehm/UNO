@@ -28,7 +28,7 @@ test('reject cross-origin and unauthenticated paid requests',async()=>{
 test('rate limiter rejects excess requests',()=>{assert.equal(handler._test.allowed('test-limit',1,1000),true);assert.equal(handler._test.allowed('test-limit',1,1000),false);});
 test('Responses request preserves answers and uses structured server-side output',async()=>{
  const output={feedback:'Clarify the emotional change.',questions:[{id:'emotion',title:'What changes?',why:'Guide the performance.',options:['Fear to trust','Pride to remorse'],recommendedIndex:0}],settings:'',referenceMap:'',clips:[],risks:[]};
- const result=await direct(brief,async(url,options)=>{assert.equal(url,'https://api.openai.com/v1/responses');const b=JSON.parse(options.body);assert.equal(b.store,false);assert.equal(b.text.format.strict,true);assert.deepEqual(JSON.parse(b.input),brief);return{ok:true,json:async()=>({output:[{content:[{type:'output_text',text:JSON.stringify(output)}]}]})};});assert.equal(result.questions.length,1);
+ const result=await direct(brief,async(url,options)=>{assert.equal(url,'https://api.openai.com/v1/responses');const b=JSON.parse(options.body);assert.equal(b.store,false);assert.equal(b.reasoning.effort,'low');assert.equal(b.max_output_tokens,3000);assert.ok(b.instructions.length<10000);assert.equal(b.text.format.strict,true);assert.deepEqual(JSON.parse(b.input),brief);return{ok:true,json:async()=>({output:[{content:[{type:'output_text',text:JSON.stringify(output)}]}]})};});assert.equal(result.questions.length,1);
 });
 test('handles quota errors and incomplete model responses without fake prompts',async()=>{
  await assert.rejects(direct(brief,async()=>({ok:false,status:429})),/billing/);

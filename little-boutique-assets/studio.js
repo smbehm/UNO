@@ -1,7 +1,8 @@
 'use strict';
 const $=id=>document.getElementById(id);
 const message=text=>{$('message').textContent=text;};
-async function request(body){const r=await fetch('/api/boutique',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});let data;try{data=await r.json();}catch{throw Error('The server did not return a studio response. Please check the deployment.');}if(!r.ok)throw Error(data.error||'Something went wrong.');return data;}
+const responseCache=new Map();
+async function request(body){const cacheKey=JSON.stringify(body);const cacheable=['review','generate'].includes(body.action);if(cacheable&&responseCache.has(cacheKey))return responseCache.get(cacheKey);const r=await fetch('/api/boutique',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});let data;try{data=await r.json();}catch{throw Error('The server did not return a studio response. Please check the deployment.');}if(!r.ok)throw Error(data.error||'Something went wrong.');if(cacheable){if(responseCache.size>=10)responseCache.delete(responseCache.keys().next().value);responseCache.set(cacheKey,data);}return data;}
 if($('login')){$('login').addEventListener('submit',async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;message('Opening the studio…');try{await request({action:'login',password:$('password').value});location.reload();}catch(err){message(err.message);}finally{b.disabled=false;}});}
 if($('brief')){
   const ids=['film','style','scene','references','continuity','duration','aspect','surface','coverage','revision'];
